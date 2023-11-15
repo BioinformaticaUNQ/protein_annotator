@@ -1,5 +1,5 @@
 .PHONY: clean
-clean: clean-build clean-pyc clean-test clean-venv
+clean: clean-build clean-pyc clean-test
 	rm -fr .mypy_cache/
 
 .PHONY: clean-build
@@ -30,14 +30,14 @@ clean-venv:
 	rm -fr .venv
 
 .PHONY: venv
-venv: clean
+venv: clean-venv
 	: # Create venv
 	python3 -m venv .venv
 
 .PHONY: install
-install: venv
+install: clean venv
 	: # Activate venv and install protein_annotator for local development
-	. .venv/bin/activate && pip install -e ".[dev,docs]"
+	. .venv/bin/activate && pip install -e ".[dev,docs,release,test]"
 
 .PHONY: test
 test:
@@ -53,3 +53,8 @@ coverage:
 coverage-report:
 	: # Generate HTML coverage report
 	. .venv/bin/activate && coverage html
+
+.PHONY: build
+build:
+	: # Build artifacts
+	. .venv/bin/activate && python -m build

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
+requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -12,19 +12,27 @@ authors = [
 ]
 description = "Protein Annotator"
 requires-python = ">=3.8"
-license.file = "LICENSE"
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
 ]
+license = { file = "LICENSE" }
+readme = "README.md"
 dependencies = [
     "httpx >= 0.24.0",
     "pydantic >= 2.0.0",
     "typing-extensions >= 4.8.0",
 ]
-dynamic = ["readme", "version"]
+dynamic = ["version"]
 
 [project.optional-dependencies]
+dev = [
+    "black ~= 23.11.0",
+    "isort ~= 5.12.0",
+    "mypy ~= 1.7.0",
+    "flake8",
+    "flake8-bugbear",
+]
 docs = [
     "mkdocs",
     "mkdocs-embed-external-markdown",
@@ -34,41 +42,28 @@ docs = [
     "mkdocs-simple-hooks",
     "mkdocstrings-python",
     "tomli",
-    "pyupgrade",
-    "mike @ git+https://github.com/jimporter/mike.git",
-    "mkdocs-embed-external-markdown>=2.3.0",
 ]
-dev = [
-    "black ~= 23.11.0",
-    "isort ~= 5.12.0",
-    "mypy ~= 1.7.0",
-    "flake8",
-    "flake8-bugbear",
-    "coverage[toml]",
-    "pytest",
-    "pytest-mock",
-    "pytest-pretty",
-]
+release = ["build", "wheel", "twine"]
 test = ["coverage[toml]", "pytest", "pytest-mock", "pytest-pretty"]
 
-[tool.setuptools]
-package-dir = { "" = "src" }
+# [tool.setuptools]
+# package-dir = { "" = "src" }
 
 [tool.setuptools.dynamic]
 version = { attr = "protein_annotator.__version__" }
-readme = { file = ["README.md"] }
 
-[tool.setuptools.packages.find]
-exclude = ["tests"]
-namespaces = false
+# [tool.setuptools.packages.find]
+# where = ["src"]
+# include = ["protein_annotator/*"]
+# exclude = ["docs", "tests"]
+# namespaces = false
 
 [tool.setuptools.package-data]
 protein_annotator = ["py.typed"]
 
 [tool.setuptools_scm]
 version_file = "src/protein_annotator/_version.py"
-version_scheme = "post-release"
-local_scheme = "dirty-tag"
+version_scheme = "no-guess-dev"
 
 [tool.black]
 line-length = 88
@@ -104,7 +99,7 @@ exclude_lines = [
 ]
 
 [tool.coverage.paths]
-build = ["src", "*/site-packages", '*\site-packages']
+build = ["src"]
 
 [tool.coverage.html]
 show_contexts = true
