@@ -46,17 +46,8 @@ docs = [
 release = ["build", "wheel", "twine"]
 test = ["coverage[toml]", "pytest", "pytest-mock", "pytest-pretty"]
 
-# [tool.setuptools]
-# package-dir = { "" = "src" }
-
 [tool.setuptools.dynamic]
 version = { attr = "protein_annotator.__version__" }
-
-# [tool.setuptools.packages.find]
-# where = ["src"]
-# include = ["protein_annotator/*"]
-# exclude = ["docs", "tests"]
-# namespaces = false
 
 [tool.setuptools.package-data]
 protein_annotator = ["py.typed"]
