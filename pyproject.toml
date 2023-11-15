@@ -46,15 +46,10 @@ docs = [
 release = ["build", "wheel", "twine"]
 test = ["coverage[toml]", "pytest", "pytest-mock", "pytest-pretty"]
 
-[tool.setuptools.dynamic]
-version = { attr = "protein_annotator.__version__" }
-
 [tool.setuptools.package-data]
 protein_annotator = ["py.typed"]
 
 [tool.setuptools_scm]
-version_file = "src/protein_annotator/_version.py"
-version_scheme = "no-guess-dev"
 
 [tool.black]
 line-length = 88
