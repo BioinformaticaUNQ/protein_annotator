@@ -1,4 +1,4 @@
-# Protein Annotation
+# Protein Annotator
 
 Authors:
 
