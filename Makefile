@@ -6,7 +6,6 @@ clean: clean-build clean-pyc clean-test
 clean-build:
 	: # Remove build artifacts
 	rm -rf dist
-	rm src/protein_annotator/_version.py
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
 
