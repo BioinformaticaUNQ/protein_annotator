@@ -75,10 +75,12 @@ addopts = ["-vvv"]
 testpaths = ["tests"]
 
 [tool.coverage.run]
+command_line = "-m pytest"
 branch = true
 source = ["protein_annotator", "tests"]
 
 [tool.coverage.report]
+show_missing = true
 exclude_lines = [
     '\#\s*pragma: no cover',
     '^\s*raise NotImplementedError\b',
