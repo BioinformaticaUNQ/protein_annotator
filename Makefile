@@ -47,12 +47,7 @@ test:
 .PHONY: coverage
 coverage:
 	: # Generate coverage report
-	. .venv/bin/activate && coverage run
-
-.PHONY: coverage-report
-coverage-report:
-	: # Generate HTML coverage report
-	. .venv/bin/activate && coverage html
+	. .venv/bin/activate && coverage run && coverage report && coverage html
 
 .PHONY: build
 build:

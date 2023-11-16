@@ -66,7 +66,9 @@ extra_standard_library = ["typing_extensions"]
 [tool.mypy]
 python_version = "3.8"
 platform = "linux"
+pretty = true
 strict = true
+show_column_numbers = true
 show_error_codes = true
 
 [tool.pytest.ini_options]
@@ -74,10 +76,15 @@ minversion = "7.0"
 addopts = ["-vvv"]
 testpaths = ["tests"]
 
+[tool.coverage.paths]
+protein_annotator = ["src/protein_annotator"]
+tests = ["tests"]
+
 [tool.coverage.run]
 command_line = "-m pytest"
+context = "protein_annotator"
 branch = true
-source = ["protein_annotator", "tests"]
+source_pkgs = ["protein_annotator"]
 
 [tool.coverage.report]
 show_missing = true
@@ -86,9 +93,6 @@ exclude_lines = [
     '^\s*raise NotImplementedError\b',
     "if typing.TYPE_CHECKING:",
 ]
-
-[tool.coverage.paths]
-build = ["src"]
 
 [tool.coverage.html]
 show_contexts = true
