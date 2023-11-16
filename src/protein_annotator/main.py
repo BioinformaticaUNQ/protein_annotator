@@ -1,2 +1,2 @@
-def say_hi():
+def say_hi() -> str:
     return "hi!"

@@ -75,6 +75,7 @@ addopts = ["-vvv"]
 testpaths = ["tests"]
 
 [tool.coverage.run]
+branch = true
 source = ["protein_annotator", "tests"]
 
 [tool.coverage.report]
