@@ -22,6 +22,8 @@ dependencies = [
     "httpx >= 0.24.0",
     "pydantic >= 2.0.0",
     "typing-extensions >= 4.8.0",
+    "biopython >= 1.80",
+    "tqdm >= 4.66",
 ]
 dynamic = ["version"]
 
@@ -48,6 +50,7 @@ test = ["coverage[toml]", "pytest", "pytest-mock", "pytest-pretty"]
 
 [tool.setuptools.package-data]
 protein_annotator = ["py.typed"]
+
 
 [tool.setuptools_scm]
 

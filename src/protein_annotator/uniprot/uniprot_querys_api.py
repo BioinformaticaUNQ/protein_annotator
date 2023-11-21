@@ -1,5 +1,10 @@
 import httpx
+from protein_annotator.uniprot import parse_prote_txt as parser
+from io import StringIO
 
 def get_protein_api(uniprod_id) -> object:
+
     prot = httpx.get('https://rest.uniprot.org/uniprotkb/'+str(uniprod_id)+'?format=txt')
-    return prot
+    record = parser.parse(StringIO(prot.text))    
+
+    return record
