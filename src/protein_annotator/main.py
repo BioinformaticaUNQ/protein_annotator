@@ -13,3 +13,4 @@ def get_protein_by_api(uniprot_id) -> object:
 
 def donwnload_uniprot(path_src):
     donwload_uniprot_db(path_src)
+
