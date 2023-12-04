@@ -1,7 +1,8 @@
 from protein_annotator.uniprot.uniprot_querys_db import * 
 from protein_annotator.uniprot.uniprot_querys_api import *
 import json
- 
+from protein_annotator.uniprot.parse_prote_txt import *
+
 def say_hi() -> str:
     return "hi!"
 
@@ -24,7 +25,16 @@ def download_file(path,url_dwn, file_name):
 
 def download_uniport_db(path):
     download_f(path, "https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.dat.gz", "uniprot_sprot.dat.gz")
+
+def parse_biolib(path):
+    parse_biolib_db(path)
+
     
+def download_biolip_db(path):
+    download_f(path,"https://zhanggroup.org/BioLiP/download/BioLiP.txt.gz", "BioLiP.txt.gz")
+
+
+
 def annotate_site(uniprot_id, residue_number, path_db)-> object:
     '''
     uniprot_id: id de la proteina  en la base de datos uniprot
