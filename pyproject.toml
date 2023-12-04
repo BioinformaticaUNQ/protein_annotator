@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "protein_annotator"
 authors = [
     { name = "Lucas Sandoval", email = "x@x.com" },
-    { name = "Mauro Portillo", email = "x@x.com" },
+    { name = "Mauro Portillo", email = "mportillo9@uvq.edu.ar" },
     { name = "Nicolas Raño", email = "x@x.com" },
     { name = "Pablo Spizzamiglio", email = "pablo.spizzamiglio@unq.edu.ar" },
 ]
