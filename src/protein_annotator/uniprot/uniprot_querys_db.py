@@ -10,7 +10,7 @@ import gzip
 
 def get_protein_db(uniprod_id, path_db)-> object:    
     
-    
+    # TODO: agregar try catch exception
     uniprot = SeqIO.index(path_db, "swiss")
     prot = uniprot.get_raw(uniprod_id)
     record = parser.parse(StringIO(codecs.decode(prot, 'utf-8')))
@@ -31,6 +31,9 @@ def get_protein_db(uniprod_id, path_db)-> object:
 '''    
 
 def download_f(path_to_download, url_dwn, file_name) -> object:
+
+    # TODO: agregar try catch exception
+
     with tempfile.NamedTemporaryFile(delete=False) as download_file:
         url = url_dwn
         with httpx.stream("GET", url, timeout=None) as response:

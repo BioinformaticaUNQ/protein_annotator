@@ -9,11 +9,9 @@ def say_hi() -> str:
 def get_protein_by_db(uniprot_id, path_db) -> str:
     return get_protein_db(uniprot_id, path_db)
 
-
 ''' obtiene una prote de uniprot via API'''
 def get_protein_by_api(uniprot_id) -> object:
     return get_protein_api(uniprot_id)
-
 
 def download_file(path,url_dwn, file_name):
     ''' 
@@ -28,12 +26,9 @@ def download_uniport_db(path):
 
 def parse_biolib(path):
     parse_biolib_db(path)
-
     
 def download_biolip_db(path):
     download_f(path,"https://zhanggroup.org/BioLiP/download/BioLiP.txt.gz", "BioLiP.txt.gz")
-
-
 
 def annotate_site(uniprot_id, residue_number, path_db)-> object:
     '''
@@ -44,21 +39,25 @@ def annotate_site(uniprot_id, residue_number, path_db)-> object:
     #obtengo la proteina de la bd uniprot
     prot = get_protein_by_db(uniprot_id, path_db)
     #filtro de la listo de  objetos features los que son bindings.
-    lis_b = filter(lambda p: p.type=='BINDING', prot.features)
+    lis_b = list(filter(lambda p: p.type=='BINDING' or p.type == 'ACT_SITE', prot.features))
     ligando = ''
     res = None
+    print(prot.sequence)
     #recorro los bindings para revisar si alguno correspoonde con la posicion que viene por parametro.     
     for bind in lis_b:
+        print(str(bind))
         #valido si estra entre el inicio y el final de la posicion.
-        if(bind.location.start <= residue_number) and (bind.location.end >= residue_number):
-            print(bind.qualifiers['ligand'])
-            #si en la posicion existe melo guardo. 
-            ligando = bind.qualifiers['ligand']
-            print('lo encontre')
-            #armo un objeto  json para poder retornar el resultado
-            res = json.loads('{ "uniprot_id":"'+str(uniprot_id)+'", "uniport": {"residue_number": "'+str(residue_number)+'", "ligand":"'+str(ligando)+'"} }')
-            break            
-        else:
-            return json.loads('{ "msg":" no se encontro el ligando en la posicion "}')
+        if(int(bind.location.start) <= residue_number) and (residue_number <= int(bind.location.end)):
+            if bind.type == 'BINDING':
+                #si en la posicion existe melo guardo. 
+                ligando = bind.qualifiers['ligand']
+                print('lo encontre')
+                #armo un objeto  json para poder retornar el resultado # agregar residuo a que se corresponde. ej: lisina 100. 
+                res = json.loads('{ "uniprot_id":"'+str(uniprot_id)+'", "uniport": {"residue_number": "'+str(residue_number)+'", "residue": "'+str(prot.sequence[residue_number-1])+'" , "ligand":"'+str(ligando)+'"} }')
+            else:
+                res = json.loads('{ "uniprot_id":"'+str(uniprot_id)+'", "uniport": {"residue_number": "'+str(residue_number)+'", "residue": "'+str(prot.sequence[residue_number-1])+'" , "ligand":"'+str(None)+'"} }')                
+                
+    if res == None:
+        res =  json.loads('{ "msg":" no se encontro el ligando en la posicion "}')        
     return res
     
