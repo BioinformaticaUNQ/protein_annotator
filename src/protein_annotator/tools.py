@@ -1,35 +1,23 @@
 from pathlib import Path
-from Bio import SeqIO
+
 import httpx
-import json
+from Bio import SeqIO
+
 from protein_annotator.schemas import ProteinData
 
-def file_exists(path) -> bool:
-  """
-  Indica si un archivo existe
 
-  Args:
-    path: ruta del archivo
+def is_fasta(path: str) -> bool:
+    """Indica si un archivo es del tipo FASTA validando existencia y extension
 
-  Returns:
-    True si el archivo existe, False sino
-  """
-  file = Path(path)
-  return file.exists()
+    Args:
+      path: ruta del archivo
 
-def is_fasta(path) -> bool:
-  """
-  Indica si un archivo es del tipo FASTA validando existencia y extension
+    Returns:
+      True si el archivo cumple la condicion, False sino la cumple
+    """
+    file_path = Path(path)
+    return file_path.exists() and file_path.suffix == ".fasta"
 
-  Args:
-    path: ruta del archivo
-
-  Returns:
-    True si el archivo cumple la condicion, False sino la cumple
-  """
-  status = file_exists(path) and Path(path).suffix=='.fasta'
-  return status
-  
 
 # def load_uniprot_db(db_path):
 #   """
@@ -46,64 +34,79 @@ def is_fasta(path) -> bool:
 #   return SwissProt.parse(handle)
 
 
-def is_uniprot_id(input:str):
-  """
-  Decide si un input dado corresponde a un uniprot id
+def is_uniprot_id(uniprot_id: str):
+    """Decide si un id dado corresponde a un uniprot id
 
-  Args:
-    input: El input a evaluar.
+    Args:
+      uniprot_id: El id a evaluar.
 
-  Returns:
-    True si el input corresponde a un uniprot id, False en caso contrario.
-  """
-  try:
-    get_fasta_from_uniprot(input)
-    return True
-  except httpx.RequestError as exc:
-    return False
-  
+    Returns:
+      True si el uniprot_id corresponde a un uniprot id, False en caso contrario.
+    """
+    try:
+        get_fasta_from_uniprot(uniprot_id)
+        return True
+    except Exception:
+        return False
 
-def parse_fasta(path) -> ProteinData:
-  """
-  Parsea un archivo FASTA y desensambla sus componentes
 
-  Args:
-    path: ruta del archivo
+def parse_fasta(path: str) -> ProteinData:
+    """Parsea un archivo FASTA y desensambla sus componentes
 
-  Returns:
-    un dict con los atributos id, descripcion y secuencia
-  """
-  results = []
-  for seq_record in SeqIO.parse(path, "fasta"):
-    id, description = get_data_from_description(seq_record.id)
-    results.append(ProteinData(id,description, get_sequence_from_seq(seq_record.seq._data.decode()), seq_record))
-  return results[0]
-  
-  """
-  Obtiene un dict con la secuencia y descripcion a partir de un uniprotID
+    Args:
+      path: ruta del archivo
 
-  Args:
-    uniprot_id: identificador uniprot
+    Returns:
+      un dict con los atributos id, descripcion y secuencia
+    """
+    results = []
+    for seq_record in SeqIO.parse(path, "fasta"):
+        protein_id, protein_description = get_data_from_description(seq_record.id)
+        results.append(
+            ProteinData(
+                protein_id,
+                protein_description,
+                get_sequence_from_seq(seq_record.seq._data.decode()),
+                seq_record,
+            )
+        )
+    return results[0]
 
-  Returns:
-    un dict con los atributos id, descripcion y secuencia
-  """
-def get_fasta_from_uniprot(uniprot_id) -> ProteinData:
-  query = str(uniprot_id)+".json"
-  try:
-    result = httpx.get('https://www.uniprot.org/uniprotkb/'+query, follow_redirects=True)
-    result.raise_for_status()
-    parsedResponse = json.loads(result.text)
-    print(parsedResponse)
-    return ProteinData(parsedResponse['uniProtkbId'],'',parsedResponse['sequence']['value'], parsedResponse)
-  except Exception as e:
-    raise e
 
+def get_fasta_from_uniprot(uniprot_id: str) -> ProteinData:
+    """
+    Obtiene un dict con la secuencia y descripcion a partir de un uniprotID
+
+    Args:
+      uniprot_id: identificador uniprot
+
+    Returns:
+      un ProteinData con los atributos id, descripcion y secuencia
+    """
+    try:
+        result = httpx.get(
+            f"https://www.uniprot.org/uniprotkb/{uniprot_id}.json",
+            follow_redirects=True,
+        )
+        result.raise_for_status()
+
+        parsed_response = result.json()
+
+        return ProteinData(
+            parsed_response["uniProtkbId"],
+            "",
+            parsed_response["sequence"]["value"],
+            parsed_response,
+        )
+
+    except Exception as e:
+        raise e
 
 
 def get_sequence_from_seq(seq) -> str:
-  return seq.replace('\')','').removeprefix('Seq(\'')
+    return seq.replace("')", "").removeprefix("Seq('")
 
-def get_data_from_description(desc: str) -> tuple[str,str]:
-  splitted = desc.split('.')
-  return (splitted[0], '') if len(splitted)<2 else (splitted[0], splitted[1])
+
+def get_data_from_description(desc: str) -> tuple[str, str]:
+    splitted = desc.split(".")
+    return (splitted[0], "") if len(splitted) < 2 else (splitted[0], splitted[1])

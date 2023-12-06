@@ -19,10 +19,10 @@ classifiers = [
 license = { file = "LICENSE" }
 readme = "README.md"
 dependencies = [
+    "biopython >= 1.81",
     "httpx >= 0.24.0",
     "pydantic >= 2.0.0",
     "typing-extensions >= 4.8.0",
-    "biopython >= 1.81"
 ]
 dynamic = ["version"]
 
@@ -74,7 +74,7 @@ show_error_codes = true
 
 [tool.pytest.ini_options]
 minversion = "7.0"
-addopts = ["-vvv"]
+addopts = ["-vvv", "-s"]
 testpaths = ["tests"]
 
 [tool.coverage.paths]

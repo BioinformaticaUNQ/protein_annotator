@@ -1,37 +1,47 @@
 from pathlib import Path
-from protein_annotator.main import ProteinAnnotator
 
-def test_instance_fasta_protein() -> None:
-    
-     # SUT
-    fastaSequence = '''>NP_061820.1_cytochrome_c_[Homo_sapiens]
-MGDVEKGKKIFIMKCSQCHTVEKGGKHKTGPNLHGLFGRKTGQAPGYSYTAANKNKGIIWGEDTLMEYLENPKKYIPGTKMIFVGIKKKEERADLIAYLKKATNE'''
-    # Expected
-    fasta_id = 'NP_061820'
-    fasta_desc = '1_cytochrome_c_[Homo_sapiens]'
-    fasta_seq = 'MGDVEKGKKIFIMKCSQCHTVEKGGKHKTGPNLHGLFGRKTGQAPGYSYTAANKNKGIIWGEDTLMEYLENPKKYIPGTKMIFVGIKKKEERADLIAYLKKATNE'
-
-    current_dir = Path(__file__).parent
-    filename = "test.fasta"
-    file_to_open = current_dir/Path(filename)
-
-    file_to_open.touch(exist_ok= True)
-    with open(file_to_open,"w+") as f:
-        f.write(fastaSequence)
+from protein_annotator.main import InputParser
 
 
-    protein = ProteinAnnotator(filename)
-    assert protein.protein_data.id==fasta_id
-    assert protein.protein_data.description==fasta_desc
-    assert protein.protein_data.sequence==fasta_seq
+def test_create_new_instance_with_fasta_file() -> None:
+    # Arrange
+    fasta_id = "NP_061820"
+    fasta_desc = "1_cytochrome_c_[Homo_sapiens]"
+    fasta_seq = (
+        "MGDVEKGKKIFIMKCSQCHTVEKGGKHKTGPNLHGLFGRKTGQAPGYSYTAANKNKGIIW"
+        "GEDTLMEYLENPKKYIPGTKMIFVGIKKKEERADLIAYLKKATNE"
+    )
+
+    fasta_file_content = f">{fasta_id}.{fasta_desc}\n{fasta_seq}"
+
+    filename_path = Path(__file__).parent / "test.fasta"
+    filename_path.touch(exist_ok=True)
+
+    with open(filename_path, "w+") as f:
+        f.write(fasta_file_content)
+
+    # Act / SUT
+    annotator = InputParser(str(filename_path.resolve()))
+
+    # Asert
+    assert annotator.protein.id == fasta_id
+    assert annotator.protein.description == fasta_desc
+    assert annotator.protein.sequence == fasta_seq
+
+    filename_path.unlink()
 
 
+def test_create_new_instance_with_uniprot_id() -> None:
+    # Arrange
+    uniprot_id = "Q8I6R7"
 
-def test_new_uniprot_protein() -> None:
-    
-    uniprot_sequence = 'Q8I6R7'
+    # Act / SUT
+    annotator = InputParser(uniprot_id)
 
-    protein = ProteinAnnotator(uniprot_sequence)
-    assert protein.protein_data.id=='ACN2_ACAGO'
-    assert protein.protein_data.sequence=='DVYKGGGGGRYGGGRYGGGGGYGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGRGGYGGGGYGGGYGGGYGGGKYKG'
-
+    # Assert
+    assert annotator.protein.id == "ACN2_ACAGO"
+    assert annotator.protein.sequence == (
+        "DVYKGGGGGRYGGGRYGGGGGYGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGGLGGG"
+        "GLGGGKGLGGGGLGGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGRGGYGGGGYGGGY"
+        "GGGYGGGKYKG"
+    )
