@@ -2,14 +2,14 @@ import argparse
 import logging
 from pprint import pprint
 
-from protein_annotator.blast import run_blast
+from protein_annotator.blast import run as run_blast
 from protein_annotator.parser import InputParser
 from protein_annotator.schemas import Args
 
 logger = logging.getLogger()
 
 
-def run_cli() -> None:
+def run() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-db",

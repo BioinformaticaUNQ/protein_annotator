@@ -1,4 +1,4 @@
-from protein_annotator.cli import run_cli
+from protein_annotator.cli import run
 
 if __name__ == "__main__":
-    run_cli()
+    run()

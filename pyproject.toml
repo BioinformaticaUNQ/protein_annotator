@@ -27,7 +27,7 @@ dependencies = [
 dynamic = ["version"]
 
 [project.scripts]
-protein_annotator = "protein_annotator.__main__:run_cli"
+protein_annotator = "protein_annotator.cli:run"
 
 [project.optional-dependencies]
 dev = [

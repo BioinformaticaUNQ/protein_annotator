@@ -10,7 +10,7 @@ from protein_annotator.schemas import Args, Hit
 logger = logging.getLogger()
 
 
-def run_blast(args: Args) -> list[Hit]:
+def run(args: Args) -> list[Hit]:
     blastp_command = NcbiblastpCommandline(
         db="../swissprot",
         query=args.query,
