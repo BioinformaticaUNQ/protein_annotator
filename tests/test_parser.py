@@ -1,9 +1,9 @@
 from pathlib import Path
 
-from protein_annotator.main import InputParser
+from protein_annotator.parser import InputParser
 
 
-def test_create_new_instance_with_fasta_file() -> None:
+def test_create_new_instance_with_fasta_file_path() -> None:
     # Arrange
     fasta_id = "NP_061820"
     fasta_desc = "1_cytochrome_c_[Homo_sapiens]"
@@ -21,12 +21,12 @@ def test_create_new_instance_with_fasta_file() -> None:
         f.write(fasta_file_content)
 
     # Act / SUT
-    annotator = InputParser(str(filename_path.resolve()))
+    sequence = InputParser.parse(str(filename_path.resolve()))
 
     # Asert
-    assert annotator.protein.id == fasta_id
-    assert annotator.protein.description == fasta_desc
-    assert annotator.protein.sequence == fasta_seq
+    assert sequence.accession == fasta_id
+    assert sequence.description == fasta_desc
+    assert sequence.sequence == fasta_seq
 
     filename_path.unlink()
 
@@ -36,11 +36,11 @@ def test_create_new_instance_with_uniprot_id() -> None:
     uniprot_id = "Q8I6R7"
 
     # Act / SUT
-    annotator = InputParser(uniprot_id)
+    sequence = InputParser.parse(uniprot_id)
 
     # Assert
-    assert annotator.protein.id == "ACN2_ACAGO"
-    assert annotator.protein.sequence == (
+    assert sequence.accession == "ACN2_ACAGO"
+    assert sequence.sequence == (
         "DVYKGGGGGRYGGGRYGGGGGYGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGGLGGG"
         "GLGGGKGLGGGGLGGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGRGGYGGGGYGGGY"
         "GGGYGGGKYKG"
