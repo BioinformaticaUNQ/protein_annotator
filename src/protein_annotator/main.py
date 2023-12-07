@@ -36,6 +36,7 @@ def annotate_site(uniprot_id, residue_number, path_db)-> object:
     residue_number: posicion en secuencia
     path_db: directorio donde se encuentra la base de datos local
     '''
+    #TODO: try catchc
     #obtengo la proteina de la bd uniprot
     prot = get_protein_by_db(uniprot_id, path_db)
     #filtro de la listo de  objetos features los que son bindings.
