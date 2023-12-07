@@ -26,6 +26,9 @@ dependencies = [
 ]
 dynamic = ["version"]
 
+[project.scripts]
+protein_annotator = "protein_annotator.__main__:run_cli"
+
 [project.optional-dependencies]
 dev = [
     "black ~= 23.11.0",
