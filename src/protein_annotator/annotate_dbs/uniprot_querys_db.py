@@ -110,14 +110,9 @@ def annotate_uniprot(uniprot_id, path_db)-> object:
     lis = []
     for bind in lis_b:
         print('bind' + str(bind))
-        #valido si estra entre el inicio y el final de la posicion.
         if bind.type == 'BINDING':
-            #si en la posicion existe melo guardo. 
             ligando = bind.qualifiers['ligand']
-            #armo un objeto  json para poder retornar el resultado # agregar residuo a que se corresponde. ej: lisina 100. 
-            #res = json.loads('{  "uniprot": {"residue_number": "'+str(residue_number)+'", "residue": "'+str(prot.seq[residue_number-1])+'" , "ligand":"'+str(ligando)+'"} }')
             lis.append(json.loads('{"residue_location": "'+str(bind.location)+'" , "ligand":"'+str(ligando)+'"} '))
         else:
-                #res = json.loads('{  "uniprot": {"residue_number": "'+str(residue_number)+'", "residue": "'+str(prot.seq[residue_number-1])+'" , "ligand":"'+str(None)+'"} }')                
             lis.append(json.loads('{"residue_location": "'+str(bind.location)+'" , "ligand":"'+str(None)+'"}'))    
     return lis
