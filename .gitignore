@@ -403,3 +403,7 @@ $RECYCLE.BIN/
 
 # setuptools_scm
 _version.py
+
+# biodata
+*.xml
+*.fasta
