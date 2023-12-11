@@ -44,7 +44,7 @@ def annotate_site(uniprot_id, residue_number, path_db_uniprot, path_biolip)-> ob
     
     return { uniprot_id : [ annot_uniprot , annot_biolip]}
     
-def annotate_sites(uniprot_id, path_db_uniprot, path_biolip):
+def annotate_protein(uniprot_id, path_db_uniprot, path_biolip):
     res_biolip = annotate_biolip(path=path_biolip, uniprot_id=uniprot_id)
     res_uniprot = annotate_uniprot(path_db=path_db_uniprot,uniprot_id=uniprot_id)
     
