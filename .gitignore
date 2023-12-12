@@ -407,3 +407,9 @@ _version.py
 # biodata
 *.xml
 *.fasta
+*.json
+
+# include test data
+!tests/data/*.xml
+!tests/data/*.fasta
+!tests/data/*.json
