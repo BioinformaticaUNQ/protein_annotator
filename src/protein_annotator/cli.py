@@ -37,8 +37,13 @@ def run() -> None:
         type=int,
         help="Maximum number of hits",
     )
-    args: Args = parser.parse_args(namespace=Args)
+    args = parser.parse_args(namespace=Args)
 
-    homologs = get_homologs(args.query, args.db, args.threshold, args.max_hits)
+    homologs = get_homologs(
+        query=args.query,
+        db=args.db,
+        threshold=args.threshold,
+        max_hits=args.max_hits,
+    )
 
     pprint(homologs)

@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import json
 from pathlib import Path
+from typing import Any
 from unittest.mock import Mock, patch
 
 import httpx
@@ -9,10 +12,10 @@ from protein_annotator.parser import InputParser
 
 
 @pytest.fixture
-def uniprot_response() -> str:
+def uniprot_response() -> dict[str, Any]:
     filename_path = Path(__file__).parent / "data" / "uniprot.json"
     with open(filename_path) as f:
-        data = json.loads(f.read())
+        data: dict[str, Any] = json.loads(f.read())
     return data
 
 
