@@ -1,5 +1,5 @@
 from argparse import Namespace
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 class Args(Namespace):
@@ -9,24 +9,18 @@ class Args(Namespace):
     max_hits: int
 
 
-@dataclass
-class Sequence:
+@dataclass(frozen=True)
+class Protein:
     accession: str
     description: str
     sequence: str
 
 
-@dataclass
+@dataclass(frozen=True)
 class Hit:
-    accession: str = field(init=False)
-    description: str
-    sequence: str
     coverage: float
+    description: str
     e_value: float
     id_percentage: float
-
-    def __post_init__(self) -> None:
-        try:
-            self.accession, _ = self.description.split(".", maxsplit=1)
-        except ValueError:
-            raise ValueError("La descripción del hit no contiene un ID válido.")
+    sequence: str
+    accession: str
