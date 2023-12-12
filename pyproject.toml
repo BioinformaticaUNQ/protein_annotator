@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "protein_annotator"
 authors = [
     { name = "Lucas Sandoval", email = "x@x.com" },
-    { name = "Mauro Portillo", email = "x@x.com" },
+    { name = "Mauro Portillo", email = "mportillo9@uvq.edu.ar" },
     { name = "Nicolas Raño", email = "x@x.com" },
     { name = "Pablo Spizzamiglio", email = "pablo.spizzamiglio@unq.edu.ar" },
 ]
@@ -22,7 +22,10 @@ dependencies = [
     "biopython >= 1.81",
     "httpx >= 0.24.0",
     "pydantic >= 2.0.0",
+    "pandas >= 2.1.3", 
     "typing-extensions >= 4.8.0",
+    "biopython >= 1.80",
+    "tqdm >= 4.66",
 ]
 dynamic = ["version"]
 
@@ -52,6 +55,7 @@ test = ["coverage[toml]", "pytest", "pytest-mock", "pytest-pretty"]
 
 [tool.setuptools.package-data]
 protein_annotator = ["py.typed"]
+
 
 [tool.setuptools_scm]
 
