@@ -54,7 +54,6 @@ build:
 	: # Build artifacts
 	. .venv/bin/activate && python -m build
 
-
 .PHONY: lint
 lint:
 	: # Run mypy, flake8, black and isort
