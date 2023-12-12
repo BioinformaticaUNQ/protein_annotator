@@ -1,27 +1,12 @@
 from io import StringIO
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 import pytest
 from Bio.Blast import NCBIXML
 from Bio.Blast.Record import Blast
 
 from protein_annotator.homologs import get_homologs
-
-
-@pytest.fixture
-def uniprot_response() -> str:
-    filename_path = Path(__file__).parent / "data" / "uniprot.json"
-    with open(filename_path) as f:
-        data = f.read()
-    return data
-
-
-@pytest.fixture
-def httpx_get_mock(uniprot_response: str) -> Mock:
-    with patch("protein_annotator.parser.httpx.get") as httpx_get_mock:
-        httpx_get_mock.return_value = uniprot_response
-        yield httpx_get_mock
 
 
 @pytest.fixture
@@ -32,7 +17,7 @@ def blast_result() -> Blast:
     return data
 
 
-def test_get_homologs(httpx_get_mock: Mock, blast_result: StringIO) -> None:
+def test_get_homologs(blast_result: StringIO) -> None:
     # Arrange
     fasta_file = Path(__file__).parent / "data" / "query.fasta"
 

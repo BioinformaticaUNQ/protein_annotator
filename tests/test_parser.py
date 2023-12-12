@@ -1,6 +1,19 @@
+import json
 from pathlib import Path
+from unittest.mock import Mock, patch
+
+import httpx
+import pytest
 
 from protein_annotator.parser import InputParser
+
+
+@pytest.fixture
+def uniprot_response() -> str:
+    filename_path = Path(__file__).parent / "data" / "uniprot.json"
+    with open(filename_path) as f:
+        data = json.loads(f.read())
+    return data
 
 
 def test_parse_fasta_file() -> None:
@@ -59,12 +72,21 @@ def test_parse_fasta_file_with_header_in_another_format() -> None:
     filename_path.unlink()
 
 
-def test_create_new_instance_with_uniprot_id() -> None:
+def test_parse_uniprot_id(uniprot_response: Mock) -> None:
     # Arrange
     uniprot_id = "Q8I6R7"
 
     # Act / SUT
-    sequence = InputParser.parse(uniprot_id)
+    with patch("protein_annotator.parser.httpx.get") as httpx_get_mock:
+        httpx_get_mock.return_value = httpx.Response(
+            200,
+            json=uniprot_response,
+            request=httpx.Request(
+                "GET",
+                f"https://www.uniprot.org/uniprotkb/{uniprot_id}.json",
+            ),
+        )
+        sequence = InputParser.parse(uniprot_id)
 
     # Assert
     assert sequence.accession == "ACN2_ACAGO"

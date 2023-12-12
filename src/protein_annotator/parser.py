@@ -25,7 +25,7 @@ class InputParser:
 ACCESSION_REGEX = re.compile(r"\|(?P<accession>[0-9A-Z_]*)(\.[0-9]?)?\|")
 
 
-def get_accession(seq_id) -> str:
+def get_accession(seq_id: str) -> str:
     search = ACCESSION_REGEX.search(seq_id)
     groups = search.groupdict() if search else {}
     try:
