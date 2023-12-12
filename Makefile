@@ -53,3 +53,19 @@ coverage:
 build:
 	: # Build artifacts
 	. .venv/bin/activate && python -m build
+
+.PHONY: lint
+lint:
+	: # Run mypy, flake8, black and isort
+	. .venv/bin/activate \
+	&& mypy src tests \
+	&& flake8 src tests \
+	&& black --check src tests \
+	&& isort --check src tests
+
+.PHONY: format
+format:
+	: # Run black and isort
+	. .venv/bin/activate \
+	&& black src tests \
+	&& isort src tests

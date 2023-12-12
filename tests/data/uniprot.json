@@ -1,0 +1,287 @@
+{
+  "entryType": "UniProtKB reviewed (Swiss-Prot)",
+  "primaryAccession": "Q8I6R7",
+  "uniProtkbId": "ACN2_ACAGO",
+  "entryAudit": {
+    "firstPublicDate": "2004-09-27",
+    "lastAnnotationUpdateDate": "2022-05-25",
+    "lastSequenceUpdateDate": "2003-03-01",
+    "entryVersion": 35,
+    "sequenceVersion": 1
+  },
+  "annotationScore": 3.0,
+  "organism": {
+    "scientificName": "Acanthoscurria gomesiana",
+    "commonName": "Tarantula spider",
+    "synonyms": ["Phormictopus pheopygus"],
+    "taxonId": 115339,
+    "lineage": [
+      "Eukaryota",
+      "Metazoa",
+      "Ecdysozoa",
+      "Arthropoda",
+      "Chelicerata",
+      "Arachnida",
+      "Araneae",
+      "Mygalomorphae",
+      "Theraphosidae",
+      "Acanthoscurria"
+    ]
+  },
+  "proteinExistence": "1: Evidence at protein level",
+  "proteinDescription": {
+    "recommendedName": { "fullName": { "value": "Acanthoscurrin-2" } },
+    "flag": "Fragment,Precursor"
+  },
+  "genes": [
+    {
+      "geneName": {
+        "evidences": [
+          {
+            "evidenceCode": "ECO:0000312",
+            "source": "EMBL",
+            "id": "CAD48604.1"
+          }
+        ],
+        "value": "acantho2"
+      }
+    }
+  ],
+  "comments": [
+    {
+      "texts": [
+        {
+          "evidences": [
+            {
+              "evidenceCode": "ECO:0000269",
+              "source": "PubMed",
+              "id": "12818635"
+            }
+          ],
+          "value": "Antimicrobial protein. Strong activity against the Gram-negative bacterium E.coli SBS363 and yeast C.albicans. No detectable activity against the Gram-positive bacterium M.luteus"
+        }
+      ],
+      "commentType": "FUNCTION"
+    },
+    {
+      "commentType": "SUBCELLULAR LOCATION",
+      "subcellularLocations": [
+        {
+          "location": {
+            "evidences": [
+              {
+                "evidenceCode": "ECO:0000269",
+                "source": "PubMed",
+                "id": "12818635"
+              }
+            ],
+            "value": "Secreted",
+            "id": "SL-0243"
+          }
+        }
+      ]
+    },
+    {
+      "texts": [
+        {
+          "evidences": [
+            {
+              "evidenceCode": "ECO:0000269",
+              "source": "PubMed",
+              "id": "12818635"
+            }
+          ],
+          "value": "Expressed in hemocytes and secreted into the plasma following bacterial immune challenge"
+        }
+      ],
+      "commentType": "TISSUE SPECIFICITY"
+    },
+    {
+      "commentType": "MASS SPECTROMETRY",
+      "method": "Electrospray",
+      "molWeight": 10111.0,
+      "molWeightError": 0.0,
+      "evidences": [
+        { "evidenceCode": "ECO:0000269", "source": "PubMed", "id": "12818635" }
+      ]
+    }
+  ],
+  "features": [
+    {
+      "type": "Peptide",
+      "location": {
+        "start": { "value": 1, "modifier": "OUTSIDE" },
+        "end": { "value": 130, "modifier": "EXACT" }
+      },
+      "description": "Acanthoscurrin-2",
+      "featureId": "PRO_0000020624"
+    },
+    {
+      "type": "Modified residue",
+      "location": {
+        "start": { "value": 130, "modifier": "EXACT" },
+        "end": { "value": 130, "modifier": "EXACT" }
+      },
+      "description": "Lysine amide",
+      "evidences": [
+        { "evidenceCode": "ECO:0000269", "source": "PubMed", "id": "12818635" }
+      ]
+    },
+    {
+      "type": "Non-terminal residue",
+      "location": {
+        "start": { "value": 1, "modifier": "EXACT" },
+        "end": { "value": 1, "modifier": "EXACT" }
+      },
+      "description": "",
+      "evidences": [
+        { "evidenceCode": "ECO:0000312", "source": "EMBL", "id": "CAD48604.1" }
+      ]
+    }
+  ],
+  "keywords": [
+    { "id": "KW-0027", "category": "PTM", "name": "Amidation" },
+    { "id": "KW-0044", "category": "Molecular function", "name": "Antibiotic" },
+    {
+      "id": "KW-0929",
+      "category": "Molecular function",
+      "name": "Antimicrobial"
+    },
+    {
+      "id": "KW-0903",
+      "category": "Technical term",
+      "name": "Direct protein sequencing"
+    },
+    { "id": "KW-0295", "category": "Molecular function", "name": "Fungicide" },
+    { "id": "KW-0964", "category": "Cellular component", "name": "Secreted" }
+  ],
+  "references": [
+    {
+      "citation": {
+        "id": "12818635",
+        "citationType": "journal article",
+        "authors": [
+          "Lorenzini D.M.",
+          "da Silva P.I. Jr.",
+          "Fogaca A.C.",
+          "Bulet P.",
+          "Daffre S."
+        ],
+        "citationCrossReferences": [
+          { "database": "PubMed", "id": "12818635" },
+          { "database": "DOI", "id": "10.1016/s0145-305x(03)00058-2" }
+        ],
+        "title": "Acanthoscurrin: a novel glycine-rich antimicrobial peptide constitutively expressed in the hemocytes of the spider Acanthoscurria gomesiana.",
+        "publicationDate": "2003",
+        "journal": "Dev. Comp. Immunol.",
+        "firstPage": "781",
+        "lastPage": "791",
+        "volume": "27"
+      },
+      "referencePositions": [
+        "NUCLEOTIDE SEQUENCE [MRNA]",
+        "PROTEIN SEQUENCE OF 1-63",
+        "FUNCTION",
+        "SUBCELLULAR LOCATION",
+        "TISSUE SPECIFICITY",
+        "MASS SPECTROMETRY",
+        "AMIDATION AT LYS-130"
+      ],
+      "referenceComments": [
+        {
+          "evidences": [
+            {
+              "evidenceCode": "ECO:0000269",
+              "source": "PubMed",
+              "id": "12818635"
+            }
+          ],
+          "value": "Hemocyte",
+          "type": "TISSUE"
+        }
+      ],
+      "evidences": [
+        { "evidenceCode": "ECO:0000305" },
+        { "evidenceCode": "ECO:0000312", "source": "EMBL", "id": "CAD48604.1" }
+      ]
+    }
+  ],
+  "uniProtKBCrossReferences": [
+    {
+      "database": "EMBL",
+      "id": "AJ508926",
+      "properties": [
+        { "key": "ProteinId", "value": "CAD48604.1" },
+        { "key": "Status", "value": "-" },
+        { "key": "MoleculeType", "value": "mRNA" }
+      ]
+    },
+    {
+      "database": "AlphaFoldDB",
+      "id": "Q8I6R7",
+      "properties": [{ "key": "Description", "value": "-" }]
+    },
+    {
+      "database": "GO",
+      "id": "GO:0005576",
+      "properties": [
+        { "key": "GoTerm", "value": "C:extracellular region" },
+        { "key": "GoEvidenceType", "value": "IDA:UniProtKB" }
+      ],
+      "evidences": [
+        { "evidenceCode": "ECO:0000314", "source": "PubMed", "id": "12818635" }
+      ]
+    },
+    {
+      "database": "GO",
+      "id": "GO:0019731",
+      "properties": [
+        { "key": "GoTerm", "value": "P:antibacterial humoral response" },
+        { "key": "GoEvidenceType", "value": "IDA:UniProtKB" }
+      ],
+      "evidences": [
+        { "evidenceCode": "ECO:0000314", "source": "PubMed", "id": "12818635" }
+      ]
+    },
+    {
+      "database": "GO",
+      "id": "GO:0019732",
+      "properties": [
+        { "key": "GoTerm", "value": "P:antifungal humoral response" },
+        { "key": "GoEvidenceType", "value": "IDA:UniProtKB" }
+      ],
+      "evidences": [
+        { "evidenceCode": "ECO:0000314", "source": "PubMed", "id": "12818635" }
+      ]
+    },
+    {
+      "database": "GO",
+      "id": "GO:0031640",
+      "properties": [
+        { "key": "GoTerm", "value": "P:killing of cells of another organism" },
+        { "key": "GoEvidenceType", "value": "IEA:UniProtKB-KW" }
+      ]
+    }
+  ],
+  "sequence": {
+    "value": "DVYKGGGGGRYGGGRYGGGGGYGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGRGGYGGGGYGGGYGGGYGGGKYKG",
+    "length": 131,
+    "molWeight": 10169,
+    "crc64": "5DA56BF813BD531D",
+    "md5": "95DCCBAF6207F37CB72D7F8F10D71E33"
+  },
+  "extraAttributes": {
+    "countByCommentType": {
+      "FUNCTION": 1,
+      "SUBCELLULAR LOCATION": 1,
+      "TISSUE SPECIFICITY": 1,
+      "MASS SPECTROMETRY": 1
+    },
+    "countByFeatureType": {
+      "Peptide": 1,
+      "Modified residue": 1,
+      "Non-terminal residue": 1
+    },
+    "uniParcId": "UPI0000085D9A"
+  }
+}

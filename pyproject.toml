@@ -79,6 +79,10 @@ strict = true
 show_column_numbers = true
 show_error_codes = true
 
+[[tool.mypy.overrides]]
+module = ["Bio.*"]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = ["-vvv", "-s"]
