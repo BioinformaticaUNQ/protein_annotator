@@ -5,6 +5,7 @@ from pathlib import Path
 
 import httpx
 from Bio import SeqIO
+from protein_annotator.annotations.dbs import get_protein_from_db
 
 from protein_annotator.schemas import Protein
 
@@ -13,11 +14,11 @@ class InputParser:
     VALID_ID_REGEX = re.compile(r"[a-zA-Z0-9_]+")
 
     @classmethod
-    def parse(cls, input_data: str) -> Protein:
+    def parse(cls, input_data: str, uniprot_db: str = None) -> Protein:
         if input_data.endswith(".fasta"):
             return parse_fasta(input_data)
         elif cls.VALID_ID_REGEX.match(input_data):
-            return parse_uniprot_id(input_data)
+            return parse_uniprot_id(input_data, uniprot_db)
         else:
             raise ValueError(
                 "The provided input must be a path to a fasta file or a uniprot id"
@@ -40,13 +41,13 @@ def get_accession(seq_id: str) -> str:
 
 
 def parse_fasta(file_path: str) -> Protein:
-    """Parsea un archivo FASTA y desensambla sus componentes
+    """Parses a FASTA file with a unique registry
 
     Args:
-      path: ruta del archivo
+      path: file path
 
     Returns:
-      un dict con los atributos id, descripcion y secuencia
+      a protein object
     """
     if not Path(file_path).exists():
         raise Exception("Invalid file path")
@@ -68,28 +69,38 @@ def get_data_from_description(desc: str) -> tuple[str, str]:
     return (splitted[0], "") if len(splitted) < 2 else (splitted[0], splitted[1])
 
 
-def parse_uniprot_id(uniprot_id: str) -> Protein:
-    """Obtiene un dict con la secuencia y descripcion a partir de un uniprotID
+def parse_uniprot_id(uniprot_id: str, uniprot_db: str = None) -> Protein:
+    """Get a dict with the sequence and description from a uniprotID
 
     Args:
-      uniprot_id: identificador uniprot
+      uniprot_id: uniprot identifier
 
     Returns:
-      un ProteinData con los atributos id, descripcion y secuencia
+      a Protein object
     """
-    try:
-        result = httpx.get(
-            f"https://www.uniprot.org/uniprotkb/{uniprot_id}.json",
-            follow_redirects=True,
-        )
-        result.raise_for_status()
-        parsed_response = result.json()
-
+    if uniprot_db and not Path(uniprot_db).exists():
+        raise Exception("Invalid uniprot db file path")
+    if uniprot_db and Path(uniprot_db).exists():
+        local_uniprot_result = get_protein_from_db(uniprot_id, uniprot_db)
         return Protein(
-            parsed_response["uniProtkbId"],
-            "",
-            parsed_response["sequence"]["value"],
-        )
+            local_uniprot_result.name,
+            local_uniprot_result.description,
+            str(local_uniprot_result.seq)
+        ) or None
+    else:
+        try:
+            result = httpx.get(
+                f"https://www.uniprot.org/uniprotkb/{uniprot_id}.json",
+                follow_redirects=True,
+            )
+            result.raise_for_status()
+            parsed_response = result.json()
 
-    except Exception as e:
-        raise Exception("Failed to retrieve protein details from Uniprot") from e
+            return Protein(
+                parsed_response["uniProtkbId"],
+                "",
+                parsed_response["sequence"]["value"],
+            )
+
+        except Exception as e:
+            raise Exception("Failed to retrieve protein details from Uniprot") from e

@@ -66,7 +66,7 @@ def download_file(path_to_download: str, url: str, file_name: str) -> pathlib.Pa
         raise e
 
 
-def download_uniport_db(path: str) -> None:
+def download_uniprot_db(path: str) -> None:
     download_file(
         path,
         "https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.dat.gz",

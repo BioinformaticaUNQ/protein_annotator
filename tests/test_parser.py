@@ -7,6 +7,7 @@ from unittest.mock import Mock, patch
 
 import httpx
 import pytest
+from protein_annotator.annotations.dbs import download_uniprot_db
 
 from protein_annotator.parser import InputParser
 
@@ -90,6 +91,24 @@ def test_parse_uniprot_id(uniprot_response: Mock) -> None:
             ),
         )
         sequence = InputParser.parse(uniprot_id)
+
+    # Assert
+    assert sequence.accession == "ACN2_ACAGO"
+    assert sequence.sequence == (
+        "DVYKGGGGGRYGGGRYGGGGGYGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGGLGGG"
+        "GLGGGKGLGGGGLGGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGRGGYGGGGYGGGY"
+        "GGGYGGGKYKG"
+    )
+
+def test_parse_uniprot_id_with_local_db(uniprot_response: Mock) -> None:
+    # Arrange
+    db_path = Path(__file__).parent / "data"/ "uniprot_sprot.dat.gz"
+    uniprot_id = 'Q8I6R7'
+    if not Path(db_path).is_file():
+        download_uniprot_db(db_path.parent)
+    
+    # Act / SUT
+    sequence = InputParser.parse(uniprot_id, db_path)
 
     # Assert
     assert sequence.accession == "ACN2_ACAGO"
