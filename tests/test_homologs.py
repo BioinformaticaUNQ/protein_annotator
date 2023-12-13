@@ -30,16 +30,16 @@ def test_get_homologs(blast_result: StringIO) -> None:
 
     # Assert
     assert len(hits) == 2
-    assert hits[0].accession == "P99998"
-    assert hits[0].coverage == 100.0
-    assert hits[0].description == (
+    assert hits[0]["uniprot_id"] == "P99998"
+    assert hits[0]["coverage"] == 100.0
+    assert hits[0]["description"] == (
         "RecName: Full=Cytochrome c [Pan troglodytes] >sp|P99999.2| RecName: "
         "Full=Cytochrome c [Homo sapiens] >sp|Q5RFH4.3| RecName: Full=Cytochrome "
         "c [Pongo abelii] >sp|Q6WUX8.3| RecName: Full=Cytochrome c [Gorilla gorilla gorilla]"
     )
-    assert hits[0].e_value == 1.31049e-73
-    assert hits[0].id_percentage == 100.0
-    assert hits[0].sequence == (
+    assert hits[0]["e_value"] == 1.31049e-73
+    assert hits[0]["id_percentage"] == 100.0
+    assert hits[0]["sequence"] == (
         "MGDVEKGKKIFIMKCSQCHTVEKGGKHKTGPNLHGLFGRKTGQAPGYSYTAANKNKGIIW"
         "GEDTLMEYLENPKKYIPGTKMIFVGIKKKEERADLIAYLKKATNE"
     )

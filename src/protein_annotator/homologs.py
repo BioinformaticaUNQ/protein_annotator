@@ -3,13 +3,13 @@ from __future__ import annotations
 import logging
 from io import StringIO
 from pathlib import Path
+from typing import Any, Dict, List
 
 from Bio.Blast import NCBIWWW, NCBIXML
 from Bio.Blast.Applications import NcbiblastpCommandline
 from Bio.Blast.Record import Blast
 
 from protein_annotator.parser import InputParser, get_accession
-from protein_annotator.schemas import Hit
 
 logger = logging.getLogger("protein_annotator")
 
@@ -55,7 +55,7 @@ def get_homologs(
     db: str,
     threshold: int = 40,
     max_hits: int = 10,
-) -> list[Hit]:
+) -> List[Dict[str, Any]]:
     blast = _run_blast(query, db, threshold, max_hits)
 
     hits = []
@@ -64,8 +64,8 @@ def get_homologs(
             id_percentage = round(hsp.identities / hsp.align_length, 2) * 100
             if id_percentage >= threshold:
                 hits.append(
-                    Hit(
-                        accession=get_accession(alignment.hit_id),
+                    dict(
+                        uniprot_id=get_accession(alignment.hit_id),
                         description=alignment.hit_def,
                         sequence=hsp.sbjct,
                         coverage=len(hsp.sbjct) / len(hsp.query) * 100,
