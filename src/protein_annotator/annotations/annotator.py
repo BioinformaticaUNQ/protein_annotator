@@ -13,15 +13,19 @@ def annotate_site(
     path_db_uniprot: str,
     path_biolip: str,
 ) -> Dict[str, Any]:
-    biolip_annotation = annotate_site_biolip(
-        path_biolip,
-        uniprot_id,
-        residue_number,
-    )
     uniprot_annotation = annotate_site_uniprot(
         uniprot_id,
         residue_number,
         path_db_uniprot,
+    )
+    #Cortamos aca porque si no esta en uniprot por uniprot id directamente no existe en biolip
+    if(uniprot_annotation is None):
+        return { "uniprot_id": "uniprot_id invalido o inexistente en la base de datos" }
+
+    biolip_annotation = annotate_site_biolip(
+        path_biolip,
+        uniprot_id,
+        residue_number,
     )
     return {
         "uniprot_id": uniprot_id,
@@ -33,12 +37,16 @@ def annotate_site(
 def annotate_protein(
     uniprot_id: str, path_db_uniprot: str, path_biolip: str
 ) -> Dict[str, Any]:
-    biolip_annotations = annotate_biolip(
-        path=path_biolip,
-        uniprot_id=uniprot_id,
-    )
     uniprot_annotations = annotate_uniprot(
         db_path=path_db_uniprot,
+        uniprot_id=uniprot_id,
+    )
+    #Cortamos aca porque si no esta en uniprot por uniprot id directamente no existe en biolip
+    if(uniprot_annotations is None):
+        return { "uniprot_id": "uniprot_id invalido o inexistente en la base de datos" }
+    
+    biolip_annotations = annotate_biolip(
+        path=path_biolip,
         uniprot_id=uniprot_id,
     )
     return {

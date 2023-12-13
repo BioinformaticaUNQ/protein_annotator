@@ -20,7 +20,7 @@ def annotate_site_uniprot(
 
     protein = get_protein_from_db(uniprot_id, db_path)
     if not protein:
-        return annotation
+        return None
 
     # filters protein features by type
     bindings = (
@@ -58,7 +58,7 @@ def annotate_uniprot(uniprot_id: str, db_path: str) -> List[Dict[str, Any]]:
 
     protein = get_protein_from_db(uniprot_id, db_path)
     if not protein:
-        return annotations
+        return None
 
     # filters protein features by type
     bindings = (
