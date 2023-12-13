@@ -8,7 +8,9 @@ Install blast tools:
 
 - Ubuntu:
 
-  `sudo apt install ncbi-blast+`
+  ```shell
+  sudo apt install ncbi-blast+
+  ```
 
 - MacOS:
 
@@ -22,19 +24,27 @@ Prepare a protein DB in your local drive with the NCBI tools if you want to run 
 
 > In this example swissprot was already downloaded from <https://ftp.ncbi.nlm.nih.gov/blast/db/>.
 
-`makeblastdb -in swissprot -dbtype prot -parse_seqids`
+```shell
+makeblastdb -in swissprot -dbtype prot -parse_seqids
+```
 
 ### Create venv
 
-`make install`
+```shell
+make install
+```
 
 ### Activate venv
 
-`source .venv/bin/activate`
+```shell
+source .venv/bin/activate
+```
 
 ### Deactivate venv
 
-`deactivate`
+```shell
+deactivate
+```
 
 ## Usage
 
