@@ -14,7 +14,7 @@ from protein_annotator.parser import InputParser, get_accession
 logger = logging.getLogger("protein_annotator")
 
 
-def _run_blast(query: str, db: str, threshold: int, max_hits: int) -> Blast:
+def _run_blast(query: str, db: str, threshold: int, max_hits: int, uniprot_db: str) -> Blast:
     if Path(query).exists() and Path(db).exists():
         logger.warning(
             f"Local execution of blastp for {query=} {db=} {threshold=} {max_hits=}"
@@ -28,7 +28,7 @@ def _run_blast(query: str, db: str, threshold: int, max_hits: int) -> Blast:
         query_result = StringIO(stdout)
 
     else:
-        protein = InputParser.parse(query)
+        protein = InputParser.parse(query, uniprot_db)
         logger.warning(
             f"Remote execution of blastp for {protein.sequence=} {db=} {threshold=} {max_hits=}"
         )
@@ -55,8 +55,9 @@ def get_homologs(
     db: str,
     threshold: int = 40,
     max_hits: int = 10,
+    uniprot_db: str = None
 ) -> List[Dict[str, Any]]:
-    blast = _run_blast(query, db, threshold, max_hits)
+    blast = _run_blast(query, db, threshold, max_hits, uniprot_db)
 
     hits = []
     for alignment in blast.alignments:

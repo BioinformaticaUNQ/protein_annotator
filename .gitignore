@@ -413,3 +413,6 @@ _version.py
 !tests/data/*.xml
 !tests/data/*.fasta
 !tests/data/*.json
+
+# exclude test dbs
+tests/data/*.dat.gz

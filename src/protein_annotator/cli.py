@@ -8,7 +8,7 @@ from protein_annotator.annotations.annotator import (
     annotate_protein as annotate_p,
     annotate_site as annotate_s,
 )
-from protein_annotator.annotations.dbs import download_biolip_db, download_uniport_db
+from protein_annotator.annotations.dbs import download_biolip_db, download_uniprot_db
 from protein_annotator.homologs import get_homologs
 
 logger = logging.getLogger()
@@ -63,6 +63,13 @@ def subcommand(args=None, parent=subparsers):
             type=int,
             help="Maximum number of hits",
         ),
+        argument(
+            "-u",
+            "--uniprot-db",
+            type=str,
+            required=True,
+            help="Uniprot DB path",
+        ),
     ]
 )
 def homologs(args):
@@ -71,6 +78,7 @@ def homologs(args):
         db=args.db,
         threshold=args.threshold,
         max_hits=args.max_hits,
+        uniprot_db=args.uniprot_db
     )
     pprint(result)
 
@@ -171,7 +179,7 @@ def annotate_protein(args):
 )
 def download_db(args):
     if args.db_name == "uniprot":
-        download_uniport_db(args.path)
+        download_uniprot_db(args.path)
     elif args.db_name == "biolip":
         download_biolip_db(args.path)
     else:
