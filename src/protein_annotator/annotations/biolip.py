@@ -3,7 +3,7 @@ from typing import Any, Dict, Hashable, List
 import pandas as pd
 
 
-def _load_dataframe_from_csv(path: str):
+def _load_dataframe_from_csv(path: str) -> pd.DataFrame:
     df = pd.read_csv(
         path,
         sep="\t",
@@ -39,7 +39,7 @@ def _load_dataframe_from_csv(path: str):
 
 def annotate_site_biolip(
     path: str, uniprot_id: str, residue_number: int
-) -> Dict[str, Any]:
+) -> Dict[Hashable, Any]:
     if not path or not uniprot_id or not residue_number:
         raise Exception("Invalid parameters")
 
@@ -64,7 +64,9 @@ def annotate_site_biolip(
         return {}
 
     annotations = ret.drop_duplicates().to_dict(orient="records")
-    return annotations
+    if not annotations:
+        return {}
+    return annotations[0]
 
 
 def annotate_biolip(path: str, uniprot_id: str) -> List[Dict[Hashable, Any]]:
