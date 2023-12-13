@@ -1,55 +1,92 @@
-import pandas as pd 
-import json
+from typing import Any, Dict, Hashable, List
 
-def annotate_site_biolip(path, uniprot_id, position) -> object:
+import pandas as pd
 
-    #validacion de paramtetros
-    if(path != None and uniprot_id != None and position != None):
-        #cargo los datos de biolip en un dataframe
-        df = pd.read_csv('/home/mauro/Documentos/BioLiP.txt.gz', sep='\t', lineterminator='\n',compression='gzip', usecols=[4,8,17], names=['NAid','NA1','NA2','NA3','ligando','NA4','NA5','NA6','sites','NA7','NA8','NA9','NA10','NA11','NA12','NA13','NA14','UniProt-ID','NA15','NA16','NA17'])        
-        # filtro el dataframe por uniprot
-        result = df.loc[df['UniProt-ID'] == str(uniprot_id)]
-        #validio el resultado de la busqueda
-        if(result.empty):
-            return json.loads('{ "'+uniprot_id+'": {"biolip": "no se encontro valor para el uniprot id"  }}')
-        #divido la posicion 9 original en 2, residuo y la posicion
-    
-        result = result.assign(sites=df['sites'].str.split()).explode('sites')
-        result[['residue', 'position']] = result['sites'].str.extract(r'([A-Z])([000-999].+|[0-9]|[000-999].+|[0000-9999].+)')
 
-        #busco si hay algun ligando para esa posicion
-        ret = result.loc[result['position'] == str(position)]
+def _load_dataframe_from_csv(path: str):
+    df = pd.read_csv(
+        path,
+        sep="\t",
+        lineterminator="\n",
+        compression="gzip",
+        usecols=[4, 8, 17],
+        names=[
+            "NAid",
+            "NA1",
+            "NA2",
+            "NA3",
+            "ligand",
+            "NA4",
+            "NA5",
+            "NA6",
+            "sites",
+            "NA7",
+            "NA8",
+            "NA9",
+            "NA10",
+            "NA11",
+            "NA12",
+            "NA13",
+            "NA14",
+            "uniprot_id",
+            "NA15",
+            "NA16",
+            "NA17",
+        ],
+    )
+    return df
 
-        if(ret.empty):
-            return json.loads('{ "'+uniprot_id+'" : {"biolip": "no hay ligandos para la posicion ingresada"}}')            
-       
-        jsons = ret.to_json(orient='records')
-        return json.loads(jsons)[0]
-    else:
-        raise Exception("Parametros invalidos")
 
-def annotate_biolip(path, uniprot_id) -> object:
+def annotate_site_biolip(
+    path: str, uniprot_id: str, residue_number: int
+) -> Dict[str, Any]:
+    if not path or not uniprot_id or not residue_number:
+        raise Exception("Invalid parameters")
 
-    #validacion de paramtetros
-    if(path != None and uniprot_id != None):
-        #cargo los datos de biolip en un dataframe
-        df = pd.read_csv(path, sep='\t', lineterminator='\n',compression='gzip', usecols=[4,8,17], names=['NAid','NA1','NA2','NA3','ligando','NA4','NA5','NA6','sites','NA7','NA8','NA9','NA10','NA11','NA12','NA13','NA14','UniProt-ID','NA15','NA16','NA17'])
-        # filtro el dataframe por uniprot
-        result = df.loc[df['UniProt-ID'] == str(uniprot_id)]
-        #validio el resultado de la busqueda
-        if(result.empty):
-            return json.loads('{ "'+uniprot_id+'": {"biolip": "no se encontro valor para el uniprot id"  }}')
-        #divido la posicion 9 original en 2, residuo y la posicion
-    
-        result = result.assign(sites=df['sites'].str.split()).explode('sites')
-        result[['residue', 'position']] = result['sites'].str.extract(r'([A-Z])([000-999].+|[0-9]|[000-999].+|[0000-9999].+)')
+    df = _load_dataframe_from_csv(path)
 
-        #busco si hay algun ligando para esa posicion
-        
-        if(result.empty):
-            return json.loads('{ "'+uniprot_id+'" : {"biolip": "no hay ligandos para la posicion ingresada"}}')            
-       
-        jsons = result.to_json(orient='records')
-        return json.loads(jsons)
-    else:
-        raise Exception("Parametros invalidos")
+    # filters dataframe by uniprot id
+    result = df.loc[df["uniprot_id"] == str(uniprot_id)]
+
+    if result.empty:
+        return {}
+
+    # splits the "sites" column into "residue" and "residue_number"
+    result = result.assign(sites=df["sites"].str.split()).explode("sites")
+    result[["residue", "residue_number"]] = result["sites"].str.extract(
+        r"([A-Z])([000-999].+|[0-9]|[000-999].+|[0000-9999].+)"
+    )
+
+    # searches for ligands at the given redidue number (position)
+    ret = result.loc[result["residue_number"] == str(residue_number)]
+
+    if ret.empty:
+        return {}
+
+    annotations = ret.drop_duplicates().to_dict(orient="records")
+    return annotations
+
+
+def annotate_biolip(path: str, uniprot_id: str) -> List[Dict[Hashable, Any]]:
+    if not path or not uniprot_id:
+        raise ValueError("Invalid parameters")
+
+    df = _load_dataframe_from_csv(path)
+
+    # filters dataframe by uniprot id
+    result = df.loc[df["uniprot_id"] == str(uniprot_id)]
+
+    if result.empty:
+        return []
+
+    # splits the "sites" column into "residue" and "residue_number"
+    result = result.assign(sites=df["sites"].str.split()).explode("sites")
+    result[["residue", "residue_number"]] = result["sites"].str.extract(
+        r"([A-Z])([000-999].+|[0-9]|[000-999].+|[0000-9999].+)"
+    )
+
+    if result.empty:
+        return []
+
+    annotations = result.drop_duplicates().to_dict(orient="records")
+    return annotations

@@ -1,10 +1,11 @@
-import httpx
-from protein_annotator.annotate_dbs import parse_prote_txt as parser
 from io import StringIO
 
-def get_protein_api(uniprod_id) -> object:
+import httpx
+from Bio import SwissProt
+from Bio.SwissProt import Record
 
-    prot = httpx.get('https://rest.uniprot.org/uniprotkb/'+str(uniprod_id)+'?format=txt')
-    record = parser.parse(StringIO(prot.text))    
 
+def get_protein_api(uniprod_id: str) -> Record:
+    response = httpx.get(f"https://rest.uniprot.org/uniprotkb/{uniprod_id}?format=txt")
+    record = SwissProt.read(StringIO(response.text))
     return record
