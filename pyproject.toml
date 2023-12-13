@@ -21,11 +21,10 @@ readme = "README.md"
 dependencies = [
     "biopython >= 1.81",
     "httpx >= 0.24.0",
+    "pandas >= 2.1.3",
     "pydantic >= 2.0.0",
-    "pandas >= 2.1.3", 
-    "typing-extensions >= 4.8.0",
-    "biopython >= 1.80",
     "tqdm >= 4.66",
+    "typing-extensions >= 4.8.0",
 ]
 dynamic = ["version"]
 
@@ -39,6 +38,8 @@ dev = [
     "mypy ~= 1.7.0",
     "flake8",
     "flake8-bugbear",
+    "pandas-stubs",
+    "types-tqdm",
 ]
 docs = [
     "mkdocs",
