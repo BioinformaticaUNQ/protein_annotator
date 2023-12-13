@@ -95,6 +95,27 @@ options:
                         Biolip DB path
 ```
 
+#### Result Format
+```python
+{
+'biolip_annotation' : {
+  'ligand': protein ligand at the site,
+  'residue': the residue of the position indicated by the database,
+  'residue_number': the position of the residue,
+  'sites': the format of the position plus the residue according to biolip,
+  'uniprot_id': the uniprot id it belongs to
+
+}
+'uniprot_annotation':{
+  'ligand': protein ligand at the site,
+  'residue': the residue of the position indicated by the database,
+  'residue_number': the position of the residue
+  }
+}
+
+```
+
+
 For protein annotations help run `protein_annotator annotate_protein -h`.
 
 ```shell
@@ -108,6 +129,30 @@ options:
                         Uniprot DB path
   -b BIOLIP_DB, --biolip-db BIOLIP_DB
                         Biolip DB path
+```
+
+#### Result Format
+```python
+{
+'biolip_annotations' : list of protein annotations in biolip.
+Within this list the format of the objects is the following:
+  {
+    'ligand': protein ligand at the site,
+    'residue': the residue of the position indicated by the database,
+    'residue_number': the position of the residue,
+    'sites': the format of the position plus the residue according to biolip,
+    'uniprot_id': the uniprot id it belongs to
+  },
+'uniprot_annotations': list of protein annotations
+in uniprot.
+Within this list the format of the objects is the following:
+  {
+    'ligand': protein ligand at the site,
+    'residue_number': interval of the sequence in which it links with the residue format:[start:end], eg '[95:110]'
+  }
+}
+```
+
 ```
 
 For retrieving DBs help, run `protein_annotator download_db -h`.
