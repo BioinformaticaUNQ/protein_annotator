@@ -8,6 +8,7 @@ from protein_annotator.annotations.annotator import (
     annotate_protein as annotate_p,
     annotate_site as annotate_s,
 )
+from protein_annotator.annotations.dbs import download_biolip_db, download_uniport_db
 from protein_annotator.homologs import get_homologs
 
 logger = logging.getLogger()
@@ -147,6 +148,34 @@ def annotate_protein(args):
         args.biolip_db,
     )
     pprint(result)
+
+
+@subcommand(
+    [
+        argument(
+            "-n",
+            "--db-name",
+            type=str,
+            required=True,
+            choices=["uniprot", "biolip"],
+            help="DB Name",
+        ),
+        argument(
+            "-p",
+            "--path",
+            type=str,
+            required=True,
+            help="DB Path",
+        ),
+    ]
+)
+def download_db(args):
+    if args.db_name == "uniprot":
+        download_uniport_db(args.path)
+    elif args.db_name == "biolip":
+        download_biolip_db(args.path)
+    else:
+        raise ValueError("DB Name is not supported")
 
 
 def run() -> None:
