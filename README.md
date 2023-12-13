@@ -156,6 +156,8 @@ GEDTLMEYLENPKKYIPGTKMIFVGIKKKEERADLIAYLKKATNE
 ```
 
 ```python
+from pprint import pprint
+
 from protein_annotator.homologs import get_homologs
 
 homologs = get_homologs(query="query.fasta", db="../swissprot")
@@ -234,6 +236,8 @@ pprint(homologs)
 ### Homologs with remote blastp execution and Uniprot ID
 
 ```python
+from pprint import pprint
+
 from protein_annotator.homologs import get_homologs
 
 homologs = get_homologs(query="Q8I6R7", db="swissprot")
@@ -258,6 +262,8 @@ pprint(homologs)
 ### Annotations
 
 ```python
+from pprint import pprint
+
 from protein_annotator.annotations import annotator, dbs
 
 dbs.download_biolip_db("../")
