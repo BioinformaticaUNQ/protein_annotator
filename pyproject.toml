@@ -7,7 +7,7 @@ name = "protein_annotator"
 authors = [
     { name = "Lucas Sandoval", email = "x@x.com" },
     { name = "Mauro Portillo", email = "mportillo9@uvq.edu.ar" },
-    { name = "Nicolas Raño", email = "x@x.com" },
+    { name = "Nicolas Raño", email = "nicolas.rano@unq.edu.ar" },
     { name = "Pablo Spizzamiglio", email = "pablo.spizzamiglio@unq.edu.ar" },
 ]
 description = "Protein Annotator"

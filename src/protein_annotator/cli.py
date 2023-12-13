@@ -67,7 +67,6 @@ def subcommand(args=None, parent=subparsers):
             "-u",
             "--uniprot-db",
             type=str,
-            required=True,
             help="Uniprot DB path",
         ),
     ]
