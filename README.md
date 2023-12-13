@@ -145,7 +145,7 @@ Remote execution of blastp for protein.sequence='DVYKGGGGGRYGGGRYGGGGGYGGGLGGGGL
 
 ## In your Python project
 
-### With local blastp execution and a DB in stored your drive
+### Homologs with local blastp execution and a DB in stored your drive
 
 Given the sequence stored as a FASTA file:
 
@@ -156,7 +156,6 @@ GEDTLMEYLENPKKYIPGTKMIFVGIKKKEERADLIAYLKKATNE
 ```
 
 ```python
-from protein_annotator.annotations import annotator, dbs
 from protein_annotator.homologs import get_homologs
 
 homologs = get_homologs(query="query.fasta", db="../swissprot")
@@ -232,10 +231,9 @@ pprint(homologs)
 #>   'uniprot_id': 'P62894'}]
 ```
 
-### With remote blastp execution and Uniprot ID
+### Homologs with remote blastp execution and Uniprot ID
 
 ```python
-from protein_annotator.annotations import annotator, dbs
 from protein_annotator.homologs import get_homologs
 
 homologs = get_homologs(query="Q8I6R7", db="swissprot")
