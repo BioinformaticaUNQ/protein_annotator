@@ -15,7 +15,7 @@ logger = logging.getLogger("protein_annotator")
 
 
 def _run_blast(query: str, db: str, threshold: int, max_hits: int) -> Blast:
-    if Path(db).exists():
+    if Path(query).exists() and Path(db).exists():
         logger.warning(
             f"Local execution of blastp for {query=} {db=} {threshold=} {max_hits=}"
         )
@@ -38,11 +38,6 @@ def _run_blast(query: str, db: str, threshold: int, max_hits: int) -> Blast:
             protein.sequence,
             format_type="XML",
         )
-
-    # with open("out_www.xml", "+w") as f:
-    #     f.write(query_result.getvalue())
-    # with open("out_www.xml", "r") as f:
-    #     query_result = StringIO(f.read())
 
     try:
         blast: Blast = NCBIXML.read(query_result)
