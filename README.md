@@ -254,3 +254,83 @@ pprint(homologs)
 #>   'sequence': 'DVYKGGGGGRYGGGRYGGGGGYGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGRGGGYGGGGGYGGGYGGGYGGGKYKG',
 #>   'uniprot_id': 'Q8I948'}]
 ```
+
+### Annotations
+
+```python
+from protein_annotator.annotations import annotator, dbs
+
+dbs.download_biolip_db("../")
+dbs.download_uniport_db("../")
+
+site_annotations = annotator.annotate_site(
+    "P05067",
+    147,
+    "../uniprot_sprot.dat.gz",
+    "../BioLiP.txt.gz",
+)
+pprint(site_annotations)
+#> {'biolip_annotation': {'ligand': 'BU4',
+#>                        'residue': 'C',
+#>                        'residue_number': '147',
+#>                        'sites': 'C147',
+#>                        'uniprot_id': 'P05067'},
+#>  'uniprot_annotation': {'ligand': 'Cu(2+)',
+#>                         'residue': 'H',
+#>                         'residue_number': 147},
+#>  'uniprot_id': 'P05067'}
+
+annotations = annotator.annotate_protein(
+    "P05067",
+    "../uniprot_sprot.dat.gz",
+    "../BioLiP.txt.gz",
+)
+pprint(annotations)
+#> {'biolip_annotations': [{'ligand': 'CU',
+#>                          'residue': 'H',
+#>                          'residue_number': '17',
+#>                          'sites': 'H17',
+#>                          'uniprot_id': 'P05067'},
+#>                         {'ligand': 'CU',
+#>                          'residue': 'H',
+#>                          'residue_number': '21',
+#>                          'sites': 'H21',
+#>                          'uniprot_id': 'P05067'},
+#>                         {'ligand': 'CU',
+#>                          'residue': 'Y',
+#>                          'residue_number': '38',
+#>                          'sites': 'Y38',
+#>                          'uniprot_id': 'P05067'},
+#>                         ...
+#>                         {'ligand': 'peptide',
+#>                          'residue': 'V',
+#>                          'residue_number': '18',
+#>                          'sites': 'V18',
+#>                          'uniprot_id': 'P05067'},
+#>                         {'ligand': 'peptide',
+#>                          'residue': 'I',
+#>                          'residue_number': '31',
+#>                          'sites': 'I31',
+#>                          'uniprot_id': 'P05067'},
+#>                         {'ligand': 'peptide',
+#>                          'residue': 'I',
+#>                          'residue_number': '32',
+#>                          'sites': 'I32',
+#>                          'uniprot_id': 'P05067'}],
+#>  'uniprot_annotations': [{'ligand': 'heparin', 'residue_number': '[95:110]'},
+#>                          {'ligand': 'Cu(2+)', 'residue_number': '[146:147]'},
+#>                          {'ligand': 'Cu(2+)', 'residue_number': '[150:151]'},
+#>                          {'ligand': 'Cu(2+)', 'residue_number': '[167:168]'},
+#>                          {'ligand': 'Zn(2+)', 'residue_number': '[182:183]'},
+#>                          {'ligand': 'Zn(2+)', 'residue_number': '[185:186]'},
+#>                          {'ligand': 'Zn(2+)', 'residue_number': '[186:187]'},
+#>                          {'ligand': 'Cu(2+)', 'residue_number': '[676:677]'},
+#>                          {'ligand': 'Zn(2+)', 'residue_number': '[676:677]'},
+#>                          {'ligand': 'Cu(2+)', 'residue_number': '[680:681]'},
+#>                          {'ligand': 'Zn(2+)', 'residue_number': '[680:681]'},
+#>                          {'ligand': 'Cu(2+)', 'residue_number': '[683:684]'},
+#>                          {'ligand': 'Zn(2+)', 'residue_number': '[683:684]'},
+#>                          {'ligand': 'Cu(2+)', 'residue_number': '[684:685]'},
+#>                          {'ligand': 'Zn(2+)', 'residue_number': '[684:685]'}],
+#>  'uniprot_id': 'P05067'}
+```
