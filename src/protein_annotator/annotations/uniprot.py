@@ -1,5 +1,5 @@
 from typing import Any, Dict, List
-
+from tqdm import tqdm
 from protein_annotator.annotations.dbs import get_protein_from_db
 
 

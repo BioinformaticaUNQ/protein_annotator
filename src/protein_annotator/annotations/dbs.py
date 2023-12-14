@@ -2,7 +2,7 @@ import gzip
 import logging
 import pathlib
 from io import StringIO
-
+from tqdm import tqdm
 import httpx
 from Bio import SeqIO, SwissProt
 from Bio.SeqIO.SwissIO import SwissIterator
@@ -25,7 +25,7 @@ def get_protein_from_db(uniprod_id: str, db_path: str) -> SeqRecord:
         try:
             records: SwissIterator = SeqIO.parse(handle, "swiss")
             found_record = next(
-                (record for record in records if record.id == uniprod_id), None
+                (record for record in tqdm(records, desc="procesando uniprot") if record.id == uniprod_id), None
             )
             return found_record
         except Exception:

@@ -1,39 +1,42 @@
 from typing import Any, Dict, Hashable, List
-
+from tqdm import tqdm
 import pandas as pd
 
 
 def _load_dataframe_from_csv(path: str) -> pd.DataFrame:
-    df = pd.read_csv(
-        path,
-        sep="\t",
-        lineterminator="\n",
-        compression="gzip",
-        usecols=[4, 8, 17],
-        names=[
-            "NAid",
-            "NA1",
-            "NA2",
-            "NA3",
-            "ligand",
-            "NA4",
-            "NA5",
-            "NA6",
-            "sites",
-            "NA7",
-            "NA8",
-            "NA9",
-            "NA10",
-            "NA11",
-            "NA12",
-            "NA13",
-            "NA14",
-            "uniprot_id",
-            "NA15",
-            "NA16",
-            "NA17",
-        ],
-    )
+    #tqdm.pandas(desc='procesando bd BioliP')
+    with tqdm(desc="cargando base de datos BioLip") as bar:    
+        df = pd.read_csv(
+            path,
+            sep="\t",
+            lineterminator="\n",
+            compression="gzip",
+            skiprows= lambda x: bar.update(1) and False,
+            usecols=[4, 8, 17],
+            names=[
+                "NAid",
+                "NA1",
+                "NA2",
+                "NA3",
+                "ligand",
+                "NA4",
+                "NA5",
+                "NA6",
+                "sites",
+                "NA7",
+                "NA8",
+                "NA9",
+                "NA10",
+                "NA11",
+                "NA12",
+                "NA13",
+                "NA14",
+                "uniprot_id",
+                "NA15",
+                "NA16",
+                "NA17",
+            ],
+        )
     return df
 
 
