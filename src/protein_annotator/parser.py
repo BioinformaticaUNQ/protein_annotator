@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional
 
 from Bio import SeqIO
+from Bio.SeqRecord import SeqRecord
 
 from protein_annotator.annotations.dbs import (
     get_protein_from_uniprot_api,
@@ -40,9 +41,10 @@ def get_uniprot_id_from_accession(seq_id: str) -> str:
     except ValueError:
         raise ValueError("Can not retrieve accession id")
 
-def validate_sequence(seq:any) -> None:
-    NUCLEOTIDE_SEQUENCE = re.compile(r'^[ACGT]*$')
-    if NUCLEOTIDE_SEQUENCE.match(str(seq)):
+
+def validate_sequence(seq: str) -> None:
+    NUCLEOTIDE_SEQUENCE = re.compile(r"^[ACGT]*$")
+    if NUCLEOTIDE_SEQUENCE.match(seq):
         raise Exception("Sequences shoud be proteins. Nucleotide found instead")
 
 
@@ -58,17 +60,15 @@ def parse_fasta(file_path: str) -> Protein:
     if not Path(file_path).exists():
         raise ValueError("Invalid FASTA file path")
 
-    results = []
-    for record in SeqIO.parse(file_path, "fasta"):
-        validate_sequence(record.seq)
-        results.append(
-            Protein(
-                uniprot_id=get_uniprot_id_from_accession(record.id),
-                description=record.description,
-                sequence=str(record.seq),
-            )
-        )
-    return results[0]
+    record = SeqIO.read(file_path, "fasta")
+    validate_sequence(str(record.seq))
+
+    protein = Protein(
+        uniprot_id=get_uniprot_id_from_accession(record.id),
+        description=record.description,
+        sequence=str(record.seq),
+    )
+    return protein
 
 
 def parse_uniprot_id(uniprot_id: str, db_path: Optional[str] = None) -> Protein:
