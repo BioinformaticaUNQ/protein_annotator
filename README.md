@@ -61,17 +61,27 @@ To see the general help run `protein_annotator -h`.
 ```shell
 usage: protein_annotator [-h] {homologs,annotate_site,annotate_protein,download_db} ...
 
-positional arguments:
-  {homologs,annotate_site,annotate_protein,download_db}
+Provides serveral subcommands to retrieve homologs associated to a protein and making annotations
 
 options:
   -h, --help            show this help message and exit
+
+subcommands:
+  To get more help, run protein_annotator <subcommand> -h
+
+  {homologs,annotate_site,annotate_protein,download_db}
+    homologs            Uses blast to retrieve a list of homolog proteins
+    annotate_site       Annotates a given site using Uniprot and BioLip databases
+    annotate_protein    Annotates a given protein using Uniprot and BioLip databases
+    download_db         Downloads Uniprot or BioLip databases
 ```
 
 For homologs help run `protein_annotator homologs -h`.
 
 ```shell
-usage: protein_annotator homologs [-h] -q QUERY -db DB [-t THRESHOLD] [-m MAX_HITS]
+usage: protein_annotator homologs [-h] -q QUERY -db DB [-t THRESHOLD] [-m MAX_HITS] [-u UNIPROT_DB]
+
+Uses blast to retrieve a list of homolog proteins
 
 options:
   -h, --help            show this help message and exit
@@ -82,6 +92,8 @@ options:
                         Minimum identity percentage to be included in the results
   -m MAX_HITS, --max-hits MAX_HITS
                         Maximum number of hits
+  -u UNIPROT_DB, --uniprot-db UNIPROT_DB
+                        Uniprot DB path
 ```
 
 Result Format
@@ -103,6 +115,8 @@ For site annotations help run `protein_annotator annotate_site -h`.
 
 ```shell
 usage: protein_annotator annotate_site [-h] -i UNIPROT_ID [-r RESIDUE_NUMBER] -u UNIPROT_DB -b BIOLIP_DB
+
+Annotates a given site using Uniprot and BioLip databases
 
 options:
   -h, --help            show this help message and exit
@@ -142,6 +156,8 @@ For protein annotations help run `protein_annotator annotate_protein -h`.
 ```shell
 usage: protein_annotator annotate_protein [-h] -i UNIPROT_ID -u UNIPROT_DB -b BIOLIP_DB
 
+Annotates a given protein using Uniprot and BioLip databases
+
 options:
   -h, --help            show this help message and exit
   -i UNIPROT_ID, --uniprot-id UNIPROT_ID
@@ -179,6 +195,8 @@ For retrieving DBs help, run `protein_annotator download_db -h`.
 
 ```shell
 usage: protein_annotator download_db [-h] -n {uniprot,biolip} -p PATH
+
+Downloads Uniprot or BioLip databases
 
 options:
   -h, --help            show this help message and exit
