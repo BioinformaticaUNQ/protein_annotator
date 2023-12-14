@@ -1,26 +1,19 @@
 from typing import Any, Dict, List
-from tqdm import tqdm
-from protein_annotator.annotations.dbs import get_protein_from_db
+
+from Bio.SeqRecord import SeqRecord
 
 
-def annotate_site_uniprot(
-    uniprot_id: str, residue_number: int, db_path: str
-) -> Dict[str, Any]:
+def annotate_site_uniprot(protein: SeqRecord, residue_number: int) -> Dict[str, Any]:
     """Annotates site using Uniprot
 
     Args:
-        uniprot_id (str): Uniprot protein id
+        protein (SeqRecord): sequence information
         residue_number (int): position in sequence
-        db_path (str): path to the database file
 
     Returns:
         Dict[str, Any]: annotated site
     """
     annotation: Dict[str, Any] = {}
-
-    protein = get_protein_from_db(uniprot_id, db_path)
-    if not protein:
-        return None
 
     # filters protein features by type
     bindings = (
@@ -35,7 +28,7 @@ def annotate_site_uniprot(
             ligand = bind.qualifiers["ligand"] if bind.type == "BINDING" else None
             # adds the associated residue, i.e.: lisine 100
             annotation = {
-                "residue_number": residue_number,
+                "residue_number": str(residue_number),
                 "residue": protein.seq[residue_number - 1],
                 "ligand": ligand,
             }
@@ -43,22 +36,17 @@ def annotate_site_uniprot(
     return annotation
 
 
-def annotate_uniprot(uniprot_id: str, db_path: str) -> List[Dict[str, Any]]:
+def annotate_uniprot(protein: SeqRecord) -> List[Dict[str, Any]]:
     """Annotates the protein associated to the Uniprot ID
 
     Args:
-        uniprot_id (str): Uniprot protein id
-        db_path (str): path to the database file
+        protein: (SeqRecord): sequence information
 
     Returns:
-        List[Dict[str, Any]]: _description_
+        List[Dict[str, Any]]: annotated protein
     """
 
     annotations: List[Dict[str, Any]] = []
-
-    protein = get_protein_from_db(uniprot_id, db_path)
-    if not protein:
-        return None
 
     # filters protein features by type
     bindings = (

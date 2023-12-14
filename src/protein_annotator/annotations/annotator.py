@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
 from protein_annotator.annotations.biolip import annotate_biolip, annotate_site_biolip
+from protein_annotator.annotations.dbs import get_record_from_uniprot_db
 from protein_annotator.annotations.uniprot import (
     annotate_site_uniprot,
     annotate_uniprot,
@@ -10,23 +11,14 @@ from protein_annotator.annotations.uniprot import (
 def annotate_site(
     uniprot_id: str,
     residue_number: int,
-    path_db_uniprot: str,
-    path_biolip: str,
+    uniprot_db_path: str,
+    biolip_db_path: str,
 ) -> Dict[str, Any]:
-    uniprot_annotation = annotate_site_uniprot(
-        uniprot_id,
-        residue_number,
-        path_db_uniprot,
-    )
-    #Cortamos aca porque si no esta en uniprot por uniprot id directamente no existe en biolip
-    if(uniprot_annotation is None):
-        return { "uniprot_id": "uniprot_id invalido o inexistente en la base de datos" }
+    protein = get_record_from_uniprot_db(uniprot_id, uniprot_db_path)
 
-    biolip_annotation = annotate_site_biolip(
-        path_biolip,
-        uniprot_id,
-        residue_number,
-    )
+    uniprot_annotation = annotate_site_uniprot(protein, residue_number)
+    biolip_annotation = annotate_site_biolip(protein.id, residue_number, biolip_db_path)
+
     return {
         "uniprot_id": uniprot_id,
         "biolip_annotation": biolip_annotation,
@@ -35,22 +27,15 @@ def annotate_site(
 
 
 def annotate_protein(
-    uniprot_id: str, path_db_uniprot: str, path_biolip: str
+    uniprot_id: str, uniprot_db_path: str, biolip_db_path: str
 ) -> Dict[str, Any]:
-    uniprot_annotations = annotate_uniprot(
-        db_path=path_db_uniprot,
-        uniprot_id=uniprot_id,
-    )
-    #Cortamos aca porque si no esta en uniprot por uniprot id directamente no existe en biolip
-    if(uniprot_annotations is None):
-        return { "uniprot_id": "uniprot_id invalido o inexistente en la base de datos" }
-    
-    biolip_annotations = annotate_biolip(
-        path=path_biolip,
-        uniprot_id=uniprot_id,
-    )
+    protein = get_record_from_uniprot_db(uniprot_id, uniprot_db_path)
+
+    uniprot_annotations = annotate_uniprot(protein)
+    biolip_annotations = annotate_biolip(protein.id, biolip_db_path)
+
     return {
-        "uniprot_id": uniprot_id,
+        "uniprot_id": protein.id,
         "biolip_annotations": biolip_annotations,
         "uniprot_annotations": uniprot_annotations,
     }

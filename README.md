@@ -40,6 +40,12 @@ make install
 source .venv/bin/activate
 ```
 
+### Run tests
+
+```shell
+make test
+```
+
 ### Deactivate venv
 
 ```shell
@@ -78,6 +84,21 @@ options:
                         Maximum number of hits
 ```
 
+Result Format
+
+```python
+[ (list)
+  {
+    'coverage': (float),
+    'description': (str) homolog description,
+    'e_value': (float),
+    'id_percentage': (float) identity percentage,
+    'sequence': (str) sequence associated with the homolog,
+    'uniprot_id': (str) uniprot id associated with the homolog
+  },
+]
+```
+
 For site annotations help run `protein_annotator annotate_site -h`.
 
 ```shell
@@ -95,26 +116,26 @@ options:
                         Biolip DB path
 ```
 
-#### Result Format
-```python
-{
-'biolip_annotation' : {
-  'ligand': protein ligand at the site,
-  'residue': the residue of the position indicated by the database,
-  'residue_number': the position of the residue,
-  'sites': the format of the position plus the residue according to biolip,
-  'uniprot_id': the uniprot id it belongs to
+Result Format
 
-}
-'uniprot_annotation':{
-  'ligand': protein ligand at the site,
-  'residue': the residue of the position indicated by the database,
-  'residue_number': the position of the residue
+```text
+{
+  "uniprot_id": (str) the uniprot id associated to the residue
+  "biolip_annotation" : {
+    "ligand": (str) protein ligand at the site,
+    "residue": (str) the residue of the position indicated by the database,
+    "residue_number": (str) the position of the residue,
+    "sites": (str) the format of the position plus the residue according to biolip,
+    "uniprot_id": (str) the uniprot id associated to the residue
+
+  }
+  "uniprot_annotation":{
+    "ligand": (str) protein ligand at the site,
+    "residue": (str) the residue of the position indicated by the database,
+    "residue_number": (str) the position of the residue
   }
 }
-
 ```
-
 
 For protein annotations help run `protein_annotator annotate_protein -h`.
 
@@ -131,28 +152,27 @@ options:
                         Biolip DB path
 ```
 
-#### Result Format
-```python
-{
-'biolip_annotations' : list of protein annotations in biolip.
-Within this list the format of the objects is the following:
-  {
-    'ligand': protein ligand at the site,
-    'residue': the residue of the position indicated by the database,
-    'residue_number': the position of the residue,
-    'sites': the format of the position plus the residue according to biolip,
-    'uniprot_id': the uniprot id it belongs to
-  },
-'uniprot_annotations': list of protein annotations
-in uniprot.
-Within this list the format of the objects is the following:
-  {
-    'ligand': protein ligand at the site,
-    'residue_number': interval of the sequence in which it links with the residue format:[start:end], eg '[95:110]'
-  }
-}
-```
+Result Format
 
+```text
+{
+  "uniprot_id": (str) the uniprot id associated to the protein
+  "biolip_annotations": [ (list, can contain several)
+    {
+      "ligand": (str) protein ligand at the site,
+      "residue": (str) the residue of the position indicated by the database,
+      "residue_number": (str) the position of the residue,
+      "sites": (str) the format of the position plus the residue according to biolip,
+      "uniprot_id": (str) the uniprot id associated to the residue
+    },
+  ],
+  "uniprot_annotations": [ (list, can contain several)
+    {
+      "ligand": (str) protein ligand at the site,
+      "residue_number": (str) interval of the sequence in which it links with the residue format:[start:end], eg '[95:110]'
+    },
+  ]
+}
 ```
 
 For retrieving DBs help, run `protein_annotator download_db -h`.
@@ -199,6 +219,11 @@ Given the sequence stored as a FASTA file:
 MGDVEKGKKIFIMKCSQCHTVEKGGKHKTGPNLHGLFGRKTGQAPGYSYTAANKNKGIIW
 GEDTLMEYLENPKKYIPGTKMIFVGIKKKEERADLIAYLKKATNE
 ```
+
+**Important**: the FASTA file must contain a valid Uniprot Id in the header and must fall into one of the following templates:
+
+- `>xx|YYYYYY.V|zzz` it will only match `YYYYYY`, `zzz` will be used as description
+- `>YYYYYY.zzz` it will only match `YYYYYY`, `zzz` will be used as description
 
 ```python
 from pprint import pprint
@@ -328,7 +353,7 @@ pprint(site_annotations)
 #>                        'uniprot_id': 'P05067'},
 #>  'uniprot_annotation': {'ligand': 'Cu(2+)',
 #>                         'residue': 'H',
-#>                         'residue_number': 147},
+#>                         'residue_number': '147'},
 #>  'uniprot_id': 'P05067'}
 
 annotations = annotator.annotate_protein(

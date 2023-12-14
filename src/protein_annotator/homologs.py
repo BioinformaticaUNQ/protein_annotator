@@ -1,22 +1,24 @@
-from __future__ import annotations
-
-import logging
 from io import StringIO
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from Bio.Blast import NCBIWWW, NCBIXML
 from Bio.Blast.Applications import NcbiblastpCommandline
 from Bio.Blast.Record import Blast
 
-from protein_annotator.parser import InputParser, get_accession
+from protein_annotator import logger
+from protein_annotator.parser import InputParser, get_uniprot_id_from_accession
 
-logger = logging.getLogger("protein_annotator")
 
-
-def _run_blast(query: str, db: str, threshold: int, max_hits: int, uniprot_db: str) -> Blast:
+def _run_blast(
+    query: str,
+    db: str,
+    threshold: int,
+    max_hits: int,
+    uniprot_db: Optional[str] = None,
+) -> Blast:
     if Path(query).exists() and Path(db).exists():
-        logger.warning(
+        logger.info(
             f"Local execution of blastp for {query=} {db=} {threshold=} {max_hits=}"
         )
         blastp_command = NcbiblastpCommandline(
@@ -29,8 +31,8 @@ def _run_blast(query: str, db: str, threshold: int, max_hits: int, uniprot_db: s
 
     else:
         protein = InputParser.parse(query, uniprot_db)
-        logger.warning(
-            f"Remote execution of blastp for {protein.sequence=} {db=} {threshold=} {max_hits=}"
+        logger.info(
+            f"Remote execution of blastp for {query=} {db=} {threshold=} {max_hits=}"
         )
         query_result = NCBIWWW.qblast(
             "blastp",
@@ -55,7 +57,7 @@ def get_homologs(
     db: str,
     threshold: int = 40,
     max_hits: int = 10,
-    uniprot_db: str = None
+    uniprot_db: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
     blast = _run_blast(query, db, threshold, max_hits, uniprot_db)
 
@@ -66,7 +68,7 @@ def get_homologs(
             if id_percentage >= threshold:
                 hits.append(
                     dict(
-                        uniprot_id=get_accession(alignment.hit_id),
+                        uniprot_id=get_uniprot_id_from_accession(alignment.hit_id),
                         description=alignment.hit_def,
                         sequence=hsp.sbjct,
                         coverage=len(hsp.sbjct) / len(hsp.query) * 100,

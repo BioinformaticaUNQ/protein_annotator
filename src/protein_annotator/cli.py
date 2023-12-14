@@ -1,7 +1,6 @@
 # mypy: ignore-errors
 
 import argparse
-import logging
 from pprint import pprint
 
 from protein_annotator.annotations.annotator import (
@@ -11,11 +10,16 @@ from protein_annotator.annotations.annotator import (
 from protein_annotator.annotations.dbs import download_biolip_db, download_uniprot_db
 from protein_annotator.homologs import get_homologs
 
-logger = logging.getLogger()
-
-
-cli_parser = argparse.ArgumentParser()
-subparsers = cli_parser.add_subparsers(dest="subcommand")
+cli_parser = argparse.ArgumentParser(
+    description=(
+        "Provides serveral subcommands to retrieve homologs associated "
+        "to a protein and making annotations"
+    ),
+)
+subparsers = cli_parser.add_subparsers(
+    dest="subcommand",
+    description="To get more help, run protein_annotator <subcommand> -h",
+)
 
 
 def argument(*name_or_flags, **kwargs):
@@ -26,7 +30,15 @@ def subcommand(args=None, parent=subparsers):
     args = args or []
 
     def decorator(func):
-        parser = parent.add_parser(func.__name__, description=func.__doc__)
+        name = func.__name__
+        description = func.__doc__
+
+        parser = parent.add_parser(
+            name,
+            description=description,
+            help=description,
+        )
+
         for arg in args:
             parser.add_argument(*arg[0], **arg[1])
         parser.set_defaults(func=func)
@@ -72,14 +84,18 @@ def subcommand(args=None, parent=subparsers):
     ]
 )
 def homologs(args):
-    result = get_homologs(
-        query=args.query,
-        db=args.db,
-        threshold=args.threshold,
-        max_hits=args.max_hits,
-        uniprot_db=args.uniprot_db
-    )
-    pprint(result)
+    """Uses blast to retrieve a list of homolog proteins"""
+    try:
+        result = get_homologs(
+            query=args.query,
+            db=args.db,
+            threshold=args.threshold,
+            max_hits=args.max_hits,
+            uniprot_db=args.uniprot_db,
+        )
+        pprint(result)
+    except Exception as e:
+        print(e)
 
 
 @subcommand(
@@ -114,13 +130,17 @@ def homologs(args):
     ]
 )
 def annotate_site(args):
-    result = annotate_s(
-        args.uniprot_id,
-        args.residue_number,
-        args.uniprot_db,
-        args.biolip_db,
-    )
-    pprint(result)
+    """Annotates a given site using Uniprot and BioLip databases"""
+    try:
+        result = annotate_s(
+            args.uniprot_id,
+            args.residue_number,
+            args.uniprot_db,
+            args.biolip_db,
+        )
+        pprint(result)
+    except Exception as e:
+        print(e)
 
 
 @subcommand(
@@ -149,12 +169,16 @@ def annotate_site(args):
     ]
 )
 def annotate_protein(args):
-    result = annotate_p(
-        args.uniprot_id,
-        args.uniprot_db,
-        args.biolip_db,
-    )
-    pprint(result)
+    """Annotates a given protein using Uniprot and BioLip databases"""
+    try:
+        result = annotate_p(
+            args.uniprot_id,
+            args.uniprot_db,
+            args.biolip_db,
+        )
+        pprint(result)
+    except Exception as e:
+        print(e)
 
 
 @subcommand(
@@ -177,6 +201,7 @@ def annotate_protein(args):
     ]
 )
 def download_db(args):
+    """Downloads Uniprot or BioLip databases"""
     if args.db_name == "uniprot":
         download_uniprot_db(args.path)
     elif args.db_name == "biolip":

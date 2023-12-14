@@ -1,35 +1,52 @@
 import gzip
-import logging
 import pathlib
 from io import StringIO
-from tqdm import tqdm
+
 import httpx
-from Bio import SeqIO, SwissProt
+from Bio import SeqIO
 from Bio.SeqIO.SwissIO import SwissIterator
 from Bio.SeqRecord import SeqRecord
-from Bio.SwissProt import Record
 from tqdm import tqdm
 
-logger = logging.getLogger()
+
+def get_protein_from_uniprot_api(uniprot_id: str) -> SeqRecord:
+    try:
+        result = httpx.get(
+            f"https://www.uniprot.org/uniprotkb/{uniprot_id}.xml",
+            follow_redirects=True,
+        )
+        result.raise_for_status()
+
+        found_record = SeqIO.read(StringIO(result.text), "uniprot-xml")
+        return found_record
+
+    except Exception as e:
+        raise Exception(
+            f"Protein associated with the uniprot id {uniprot_id} was not found"
+        ) from e
 
 
-def get_protein_from_api(uniprod_id: str) -> Record:
-    response = httpx.get(f"https://rest.uniprot.org/uniprotkb/{uniprod_id}?format=txt")
-    record = SwissProt.read(StringIO(response.text))
-    return record
+def get_record_from_uniprot_db(uniprot_id: str, db_path: str) -> SeqRecord:
+    if not pathlib.Path(db_path).exists():
+        raise ValueError("Invalid uniprot db file path")
 
-
-def get_protein_from_db(uniprod_id: str, db_path: str) -> SeqRecord:
-    found_record = None
     with gzip.open(db_path, "rb") as handle:
         try:
             records: SwissIterator = SeqIO.parse(handle, "swiss")
             found_record = next(
-                (record for record in tqdm(records, desc="procesando uniprot") if record.id == uniprod_id), None
+                record
+                for record in tqdm(
+                    records,
+                    desc="Searching for protein in local Uniprot DB",
+                    unit="rows",
+                )
+                if record.id == uniprot_id
             )
             return found_record
-        except Exception:
-            return found_record
+        except Exception as e:
+            raise ValueError(
+                f"Protein associated with the uniprot id {uniprot_id} was not found"
+            ) from e
 
 
 def download_file(path_to_download: str, url: str, file_name: str) -> pathlib.Path:
@@ -61,9 +78,8 @@ def download_file(path_to_download: str, url: str, file_name: str) -> pathlib.Pa
 
         return file_path
     except Exception as e:
-        logger.exception(f"Error while downloading file {url}")
         file_path.unlink()
-        raise e
+        raise Exception(f"Error while downloading file {url}: {e}") from e
 
 
 def download_uniprot_db(path: str) -> None:
