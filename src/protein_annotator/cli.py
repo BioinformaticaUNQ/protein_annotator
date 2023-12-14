@@ -13,7 +13,7 @@ from protein_annotator.homologs import get_homologs
 cli_parser = argparse.ArgumentParser(
     description=(
         "Provides serveral subcommands to retrieve homologs associated "
-        "to a protein and making annotations"
+        "to a protein and make annotations"
     ),
 )
 subparsers = cli_parser.add_subparsers(

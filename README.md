@@ -61,7 +61,7 @@ To see the general help run `protein_annotator -h`.
 ```shell
 usage: protein_annotator [-h] {homologs,annotate_site,annotate_protein,download_db} ...
 
-Provides serveral subcommands to retrieve homologs associated to a protein and making annotations
+Provides serveral subcommands to retrieve homologs associated to a protein and make annotations
 
 options:
   -h, --help            show this help message and exit
