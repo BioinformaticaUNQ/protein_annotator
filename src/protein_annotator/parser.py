@@ -40,6 +40,11 @@ def get_uniprot_id_from_accession(seq_id: str) -> str:
     except ValueError:
         raise ValueError("Can not retrieve accession id")
 
+def validate_sequence(seq:any) -> None:
+    NUCLEOTIDE_SEQUENCE = re.compile(r'^[ACGT]*$')
+    if NUCLEOTIDE_SEQUENCE.match(str(seq)):
+        raise Exception("Sequences shoud be proteins. Nucleotide found instead")
+
 
 def parse_fasta(file_path: str) -> Protein:
     """Parses a FASTA file with a unique registry
@@ -55,6 +60,7 @@ def parse_fasta(file_path: str) -> Protein:
 
     results = []
     for record in SeqIO.parse(file_path, "fasta"):
+        validate_sequence(record.seq)
         results.append(
             Protein(
                 uniprot_id=get_uniprot_id_from_accession(record.id),
