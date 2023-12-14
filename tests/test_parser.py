@@ -117,3 +117,16 @@ def test_parse_uniprot_id_with_local_db(uniprot_response: Mock) -> None:
         "GLGGGKGLGGGGLGGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGRGGYGGGGYGGGY"
         "GGGYGGGKYKG"
     )
+
+def test_parse_fasta_file_with_nucleotide_sequence() -> None:
+    # Arrange
+
+    filename_path = Path(__file__).parent / "data" / "nucleotide.fasta"
+
+    # Act / SUT
+    with pytest.raises(Exception) as excinfo: 
+        sequence = InputParser.parse(str(filename_path.resolve()))
+
+    # Assert
+    assert str(excinfo.value) == "Sequences shoud be proteins. Nucleotide found instead"
+    
