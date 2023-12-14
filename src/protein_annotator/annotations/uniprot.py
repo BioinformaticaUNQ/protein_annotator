@@ -28,7 +28,7 @@ def annotate_site_uniprot(protein: SeqRecord, residue_number: int) -> Dict[str, 
             ligand = bind.qualifiers["ligand"] if bind.type == "BINDING" else None
             # adds the associated residue, i.e.: lisine 100
             annotation = {
-                "residue_number": residue_number,
+                "residue_number": str(residue_number),
                 "residue": protein.seq[residue_number - 1],
                 "ligand": ligand,
             }
