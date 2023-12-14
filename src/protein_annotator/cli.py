@@ -1,7 +1,6 @@
 # mypy: ignore-errors
 
 import argparse
-import logging
 from pprint import pprint
 
 from protein_annotator.annotations.annotator import (
@@ -10,9 +9,6 @@ from protein_annotator.annotations.annotator import (
 )
 from protein_annotator.annotations.dbs import download_biolip_db, download_uniprot_db
 from protein_annotator.homologs import get_homologs
-
-logger = logging.getLogger()
-
 
 cli_parser = argparse.ArgumentParser()
 subparsers = cli_parser.add_subparsers(dest="subcommand")
@@ -72,14 +68,17 @@ def subcommand(args=None, parent=subparsers):
     ]
 )
 def homologs(args):
-    result = get_homologs(
-        query=args.query,
-        db=args.db,
-        threshold=args.threshold,
-        max_hits=args.max_hits,
-        uniprot_db=args.uniprot_db
-    )
-    pprint(result)
+    try:
+        result = get_homologs(
+            query=args.query,
+            db=args.db,
+            threshold=args.threshold,
+            max_hits=args.max_hits,
+            uniprot_db=args.uniprot_db,
+        )
+        pprint(result)
+    except Exception as e:
+        print(e)
 
 
 @subcommand(
@@ -114,13 +113,16 @@ def homologs(args):
     ]
 )
 def annotate_site(args):
-    result = annotate_s(
-        args.uniprot_id,
-        args.residue_number,
-        args.uniprot_db,
-        args.biolip_db,
-    )
-    pprint(result)
+    try:
+        result = annotate_s(
+            args.uniprot_id,
+            args.residue_number,
+            args.uniprot_db,
+            args.biolip_db,
+        )
+        pprint(result)
+    except Exception as e:
+        print(e)
 
 
 @subcommand(
@@ -149,12 +151,15 @@ def annotate_site(args):
     ]
 )
 def annotate_protein(args):
-    result = annotate_p(
-        args.uniprot_id,
-        args.uniprot_db,
-        args.biolip_db,
-    )
-    pprint(result)
+    try:
+        result = annotate_p(
+            args.uniprot_id,
+            args.uniprot_db,
+            args.biolip_db,
+        )
+        pprint(result)
+    except Exception as e:
+        print(e)
 
 
 @subcommand(

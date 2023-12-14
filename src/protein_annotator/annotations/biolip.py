@@ -1,17 +1,25 @@
-from typing import Any, Dict, Hashable, List
-from tqdm import tqdm
+from typing import Any, Callable, Dict, Hashable, List
+
 import pandas as pd
+from tqdm import tqdm
+
+
+def _skip_none_and_update_progress_bar(bar: tqdm) -> Callable[[int], bool]:  # type: ignore
+    def update_progress_bar(x: int) -> bool:
+        bar.update(1)
+        return False
+
+    return update_progress_bar
 
 
 def _load_dataframe_from_csv(path: str) -> pd.DataFrame:
-    #tqdm.pandas(desc='procesando bd BioliP')
-    with tqdm(desc="cargando base de datos BioLip") as bar:    
+    with tqdm(desc="Loading local BioLip DB", unit="rows") as bar:
         df = pd.read_csv(
             path,
             sep="\t",
             lineterminator="\n",
             compression="gzip",
-            skiprows= lambda x: bar.update(1) and False,
+            skiprows=_skip_none_and_update_progress_bar(bar),
             usecols=[4, 8, 17],
             names=[
                 "NAid",
@@ -37,14 +45,27 @@ def _load_dataframe_from_csv(path: str) -> pd.DataFrame:
                 "NA17",
             ],
         )
-    return df
+        return df
 
 
 def annotate_site_biolip(
-    path: str, uniprot_id: str, residue_number: int
+    uniprot_id: str,
+    residue_number: int,
+    path: str,
 ) -> Dict[Hashable, Any]:
+    """Annotates site using BioLip
+
+    Args:
+        uniprot_id (str): Uniprot protein id
+        residue_number (int): position in sequence
+        path (str): path to the database file
+
+    Returns:
+        Dict[str, Any]: annotated site
+    """
+
     if not path or not uniprot_id or not residue_number:
-        raise Exception("Invalid parameters")
+        raise ValueError("Invalid parameters")
 
     df = _load_dataframe_from_csv(path)
 
@@ -72,7 +93,17 @@ def annotate_site_biolip(
     return annotations[0]
 
 
-def annotate_biolip(path: str, uniprot_id: str) -> List[Dict[Hashable, Any]]:
+def annotate_biolip(uniprot_id: str, path: str) -> List[Dict[Hashable, Any]]:
+    """Annotates the protein associated to the Uniprot ID
+
+    Args:
+        uniprot_id (str): Uniprot protein id
+        path (str): path to the database file
+
+    Returns:
+        List[Dict[str, Any]]: annotated protein
+    """
+
     if not path or not uniprot_id:
         raise ValueError("Invalid parameters")
 

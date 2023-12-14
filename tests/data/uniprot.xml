@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<uniprot xmlns="http://uniprot.org/uniprot"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://uniprot.org/uniprot http://www.uniprot.org/docs/uniprot.xsd">
+    <entry dataset="Swiss-Prot" created="2004-09-27" modified="2022-05-25" version="35"
+        xmlns="http://uniprot.org/uniprot">
+        <accession>Q8I6R7</accession>
+        <name>ACN2_ACAGO</name>
+        <protein>
+            <recommendedName>
+                <fullName>Acanthoscurrin-2</fullName>
+            </recommendedName>
+        </protein>
+        <gene>
+            <name evidence="3" type="primary">acantho2</name>
+        </gene>
+        <organism>
+            <name type="scientific">Acanthoscurria gomesiana</name>
+            <name type="common">Tarantula spider</name>
+            <name type="synonym">Phormictopus pheopygus</name>
+            <dbReference type="NCBI Taxonomy" id="115339"/>
+            <lineage>
+                <taxon>Eukaryota</taxon>
+                <taxon>Metazoa</taxon>
+                <taxon>Ecdysozoa</taxon>
+                <taxon>Arthropoda</taxon>
+                <taxon>Chelicerata</taxon>
+                <taxon>Arachnida</taxon>
+                <taxon>Araneae</taxon>
+                <taxon>Mygalomorphae</taxon>
+                <taxon>Theraphosidae</taxon>
+                <taxon>Acanthoscurria</taxon>
+            </lineage>
+        </organism>
+        <reference evidence="2 3" key="1">
+            <citation type="journal article" date="2003" name="Dev. Comp. Immunol." volume="27" first="781" last="791">
+                <title>Acanthoscurrin: a novel glycine-rich antimicrobial peptide constitutively expressed in the hemocytes of the spider Acanthoscurria gomesiana.</title>
+                <authorList>
+                    <person name="Lorenzini D.M."/>
+                    <person name="da Silva P.I. Jr."/>
+                    <person name="Fogaca A.C."/>
+                    <person name="Bulet P."/>
+                    <person name="Daffre S."/>
+                </authorList>
+                <dbReference type="PubMed" id="12818635"/>
+                <dbReference type="DOI" id="10.1016/s0145-305x(03)00058-2"/>
+            </citation>
+            <scope>NUCLEOTIDE SEQUENCE [MRNA]</scope>
+            <scope>PROTEIN SEQUENCE OF 1-63</scope>
+            <scope>FUNCTION</scope>
+            <scope>SUBCELLULAR LOCATION</scope>
+            <scope>TISSUE SPECIFICITY</scope>
+            <scope>MASS SPECTROMETRY</scope>
+            <scope>AMIDATION AT LYS-130</scope>
+            <source>
+                <tissue evidence="1">Hemocyte</tissue>
+            </source>
+        </reference>
+        <comment type="function">
+            <text evidence="1">Antimicrobial protein. Strong activity against the Gram-negative bacterium E.coli SBS363 and yeast C.albicans. No detectable activity against the Gram-positive bacterium M.luteus.</text>
+        </comment>
+        <comment type="subcellular location">
+            <subcellularLocation>
+                <location evidence="1">Secreted</location>
+            </subcellularLocation>
+        </comment>
+        <comment type="tissue specificity">
+            <text evidence="1">Expressed in hemocytes and secreted into the plasma following bacterial immune challenge.</text>
+        </comment>
+        <comment type="mass spectrometry" mass="10111.0" method="Electrospray" evidence="1"/>
+        <dbReference type="EMBL" id="AJ508926">
+            <property type="protein sequence ID" value="CAD48604.1"/>
+            <property type="molecule type" value="mRNA"/>
+        </dbReference>
+        <dbReference type="AlphaFoldDB" id="Q8I6R7"/>
+        <dbReference type="GO" id="GO:0005576">
+            <property type="term" value="C:extracellular region"/>
+            <property type="evidence" value="ECO:0000314"/>
+            <property type="project" value="UniProtKB"/>
+        </dbReference>
+        <dbReference type="GO" id="GO:0019731">
+            <property type="term" value="P:antibacterial humoral response"/>
+            <property type="evidence" value="ECO:0000314"/>
+            <property type="project" value="UniProtKB"/>
+        </dbReference>
+        <dbReference type="GO" id="GO:0019732">
+            <property type="term" value="P:antifungal humoral response"/>
+            <property type="evidence" value="ECO:0000314"/>
+            <property type="project" value="UniProtKB"/>
+        </dbReference>
+        <dbReference type="GO" id="GO:0031640">
+            <property type="term" value="P:killing of cells of another organism"/>
+            <property type="evidence" value="ECO:0007669"/>
+            <property type="project" value="UniProtKB-KW"/>
+        </dbReference>
+        <proteinExistence type="evidence at protein level"/>
+        <keyword id="KW-0027">Amidation</keyword>
+        <keyword id="KW-0044">Antibiotic</keyword>
+        <keyword id="KW-0929">Antimicrobial</keyword>
+        <keyword id="KW-0903">Direct protein sequencing</keyword>
+        <keyword id="KW-0295">Fungicide</keyword>
+        <keyword id="KW-0964">Secreted</keyword>
+        <feature type="peptide" id="PRO_0000020624" description="Acanthoscurrin-2">
+            <location>
+                <begin position="1" status="less than"/>
+                <end position="130"/>
+            </location>
+        </feature>
+        <feature type="modified residue" description="Lysine amide" evidence="1">
+            <location>
+                <position position="130"/>
+            </location>
+        </feature>
+        <feature type="non-terminal residue" evidence="3">
+            <location>
+                <position position="1"/>
+            </location>
+        </feature>
+        <evidence type="ECO:0000269" key="1">
+            <source>
+                <dbReference type="PubMed" id="12818635"/>
+            </source>
+        </evidence>
+        <evidence type="ECO:0000305" key="2"/>
+        <evidence type="ECO:0000312" key="3">
+            <source>
+                <dbReference type="EMBL" id="CAD48604.1"/>
+            </source>
+        </evidence>
+        <sequence length="131" mass="10169" checksum="5DA56BF813BD531D" modified="2003-03-01" version="1" precursor="true" fragment="single">DVYKGGGGGRYGGGRYGGGGGYGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGGLGGGGLGGGKGLGGGGLGGGGLGGGRGGYGGGGYGGGYGGGYGGGKYKG</sequence>
+    </entry>
+    <copyright>
+Copyrighted by the UniProt Consortium, see https://www.uniprot.org/terms Distributed under the Creative Commons Attribution (CC BY 4.0) License
+    </copyright>
+</uniprot>

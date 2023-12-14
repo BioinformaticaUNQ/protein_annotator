@@ -3,6 +3,6 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class Protein:
-    accession: str
+    uniprot_id: str
     description: str
     sequence: str
