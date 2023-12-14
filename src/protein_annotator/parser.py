@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Optional
 
 from Bio import SeqIO
-from Bio.SeqRecord import SeqRecord
 
 from protein_annotator.annotations.dbs import (
     get_protein_from_uniprot_api,
