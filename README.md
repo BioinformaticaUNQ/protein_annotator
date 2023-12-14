@@ -40,6 +40,12 @@ make install
 source .venv/bin/activate
 ```
 
+### Run tests
+
+```shell
+make test
+```
+
 ### Deactivate venv
 
 ```shell
@@ -96,6 +102,7 @@ options:
 ```
 
 #### Result Format
+
 ```python
 {
 'biolip_annotation' : {
@@ -115,7 +122,6 @@ options:
 
 ```
 
-
 For protein annotations help run `protein_annotator annotate_protein -h`.
 
 ```shell
@@ -132,6 +138,7 @@ options:
 ```
 
 #### Result Format
+
 ```python
 {
 'biolip_annotations' : list of protein annotations in biolip.
@@ -153,7 +160,7 @@ Within this list the format of the objects is the following:
 }
 ```
 
-```
+````
 
 For retrieving DBs help, run `protein_annotator download_db -h`.
 
@@ -165,7 +172,7 @@ options:
   -n {uniprot,biolip}, --db-name {uniprot,biolip}
                         DB Name
   -p PATH, --path PATH  DB Path
-```
+````
 
 ### Examples
 
